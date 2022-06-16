@@ -10,6 +10,7 @@ specifiers:
   '@types/react-dom': ^18.0.5
   autoprefixer: ^10.4.7
   magic-sdk: ^8.1.1
+  moralis: ^1.8.0
   postcss: ^8.4.14
   react: ^18.2.0
   react-dom: ^18.2.0
@@ -29,6 +30,7 @@ dependencies:
   '@types/react': 18.0.13
   '@types/react-dom': 18.0.5
   magic-sdk: 8.1.1
+  moralis: 1.8.0
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
   react-moralis: 1.4.0_63nvvkffkv7yotc6qt4lr43hbi
@@ -1663,11 +1665,11 @@ packages:
       '@ethersproject/bignumber': 5.6.2
       '@ethersproject/bytes': 5.6.1
       '@ethersproject/constants': 5.6.1
-      '@ethersproject/hash': 5.6.0
+      '@ethersproject/hash': 5.6.1
       '@ethersproject/keccak256': 5.6.1
       '@ethersproject/logger': 5.6.0
       '@ethersproject/properties': 5.6.0
-      '@ethersproject/strings': 5.6.0
+      '@ethersproject/strings': 5.6.1
     dev: false
 
   /@ethersproject/abstract-provider/5.6.0:
@@ -1676,10 +1678,10 @@ packages:
       '@ethersproject/bignumber': 5.6.2
       '@ethersproject/bytes': 5.6.1
       '@ethersproject/logger': 5.6.0
-      '@ethersproject/networks': 5.6.0
+      '@ethersproject/networks': 5.6.3
       '@ethersproject/properties': 5.6.0
       '@ethersproject/transactions': 5.6.2
-      '@ethersproject/web': 5.6.0
+      '@ethersproject/web': 5.6.1
     dev: false
 
   /@ethersproject/abstract-provider/5.6.1:
@@ -1697,7 +1699,7 @@ packages:
   /@ethersproject/abstract-signer/5.6.0:
     resolution: {integrity: sha512-WOqnG0NJKtI8n0wWZPReHtaLkDByPL67tn4nBaDAhmVq8sjHTPbCdz4DRhVu/cfTOvfy9w3iq5QZ7BX7zw56BQ==}
     dependencies:
-      '@ethersproject/abstract-provider': 5.6.0
+      '@ethersproject/abstract-provider': 5.6.1
       '@ethersproject/bignumber': 5.6.2
       '@ethersproject/bytes': 5.6.1
       '@ethersproject/logger': 5.6.0
@@ -1797,8 +1799,8 @@ packages:
     resolution: {integrity: sha512-74Ge7iqTDom0NX+mux8KbRUeJgu1eHZ3iv6utv++sLJG80FVuU9HnHeKVPfjd9s3woFhaFoQGf3B3iH/FrQmgw==}
     dependencies:
       '@ethersproject/abi': 5.6.0
-      '@ethersproject/abstract-provider': 5.6.0
-      '@ethersproject/abstract-signer': 5.6.0
+      '@ethersproject/abstract-provider': 5.6.1
+      '@ethersproject/abstract-signer': 5.6.2
       '@ethersproject/address': 5.6.1
       '@ethersproject/bignumber': 5.6.2
       '@ethersproject/bytes': 5.6.1
@@ -1811,14 +1813,14 @@ packages:
   /@ethersproject/hash/5.6.0:
     resolution: {integrity: sha512-fFd+k9gtczqlr0/BruWLAu7UAOas1uRRJvOR84uDf4lNZ+bTkGl366qvniUZHKtlqxBRU65MkOobkmvmpHU+jA==}
     dependencies:
-      '@ethersproject/abstract-signer': 5.6.0
+      '@ethersproject/abstract-signer': 5.6.2
       '@ethersproject/address': 5.6.1
       '@ethersproject/bignumber': 5.6.2
       '@ethersproject/bytes': 5.6.1
       '@ethersproject/keccak256': 5.6.1
       '@ethersproject/logger': 5.6.0
       '@ethersproject/properties': 5.6.0
-      '@ethersproject/strings': 5.6.0
+      '@ethersproject/strings': 5.6.1
     dev: false
 
   /@ethersproject/hash/5.6.1:
@@ -1837,16 +1839,16 @@ packages:
   /@ethersproject/hdnode/5.6.0:
     resolution: {integrity: sha512-61g3Jp3nwDqJcL/p4nugSyLrpl/+ChXIOtCEM8UDmWeB3JCAt5FoLdOMXQc3WWkc0oM2C0aAn6GFqqMcS/mHTw==}
     dependencies:
-      '@ethersproject/abstract-signer': 5.6.0
+      '@ethersproject/abstract-signer': 5.6.2
       '@ethersproject/basex': 5.6.0
       '@ethersproject/bignumber': 5.6.2
       '@ethersproject/bytes': 5.6.1
       '@ethersproject/logger': 5.6.0
       '@ethersproject/pbkdf2': 5.6.0
       '@ethersproject/properties': 5.6.0
-      '@ethersproject/sha2': 5.6.0
+      '@ethersproject/sha2': 5.6.1
       '@ethersproject/signing-key': 5.6.2
-      '@ethersproject/strings': 5.6.0
+      '@ethersproject/strings': 5.6.1
       '@ethersproject/transactions': 5.6.2
       '@ethersproject/wordlists': 5.6.0
     dev: false
@@ -1854,7 +1856,7 @@ packages:
   /@ethersproject/json-wallets/5.6.0:
     resolution: {integrity: sha512-fmh86jViB9r0ibWXTQipxpAGMiuxoqUf78oqJDlCAJXgnJF024hOOX7qVgqsjtbeoxmcLwpPsXNU0WEe/16qPQ==}
     dependencies:
-      '@ethersproject/abstract-signer': 5.6.0
+      '@ethersproject/abstract-signer': 5.6.2
       '@ethersproject/address': 5.6.1
       '@ethersproject/bytes': 5.6.1
       '@ethersproject/hdnode': 5.6.0
@@ -1863,7 +1865,7 @@ packages:
       '@ethersproject/pbkdf2': 5.6.0
       '@ethersproject/properties': 5.6.0
       '@ethersproject/random': 5.6.0
-      '@ethersproject/strings': 5.6.0
+      '@ethersproject/strings': 5.6.1
       '@ethersproject/transactions': 5.6.2
       aes-js: 3.0.0
       scrypt-js: 3.0.1
@@ -1903,7 +1905,7 @@ packages:
     resolution: {integrity: sha512-Wu1AxTgJo3T3H6MIu/eejLFok9TYoSdgwRr5oGY1LTLfmGesDoSx05pemsbrPT2gG4cQME+baTSCp5sEo2erZQ==}
     dependencies:
       '@ethersproject/bytes': 5.6.1
-      '@ethersproject/sha2': 5.6.0
+      '@ethersproject/sha2': 5.6.1
     dev: false
 
   /@ethersproject/properties/5.6.0:
@@ -1915,23 +1917,23 @@ packages:
   /@ethersproject/providers/5.6.0:
     resolution: {integrity: sha512-6+5PKXTWAttJWFWF8+xCDTCa2/dtq9BNrdKQHGl0IyIOwj99vM6OeThmIRcsIAzIOb8m0XS6w+1KFZwrf3j9nw==}
     dependencies:
-      '@ethersproject/abstract-provider': 5.6.0
-      '@ethersproject/abstract-signer': 5.6.0
+      '@ethersproject/abstract-provider': 5.6.1
+      '@ethersproject/abstract-signer': 5.6.2
       '@ethersproject/address': 5.6.1
       '@ethersproject/basex': 5.6.0
       '@ethersproject/bignumber': 5.6.2
       '@ethersproject/bytes': 5.6.1
       '@ethersproject/constants': 5.6.1
-      '@ethersproject/hash': 5.6.0
+      '@ethersproject/hash': 5.6.1
       '@ethersproject/logger': 5.6.0
-      '@ethersproject/networks': 5.6.0
+      '@ethersproject/networks': 5.6.3
       '@ethersproject/properties': 5.6.0
       '@ethersproject/random': 5.6.0
       '@ethersproject/rlp': 5.6.1
-      '@ethersproject/sha2': 5.6.0
-      '@ethersproject/strings': 5.6.0
+      '@ethersproject/sha2': 5.6.1
+      '@ethersproject/strings': 5.6.1
       '@ethersproject/transactions': 5.6.2
-      '@ethersproject/web': 5.6.0
+      '@ethersproject/web': 5.6.1
       bech32: 1.1.4
       ws: 7.4.6
     transitivePeerDependencies:
@@ -2005,8 +2007,8 @@ packages:
       '@ethersproject/bytes': 5.6.1
       '@ethersproject/keccak256': 5.6.1
       '@ethersproject/logger': 5.6.0
-      '@ethersproject/sha2': 5.6.0
-      '@ethersproject/strings': 5.6.0
+      '@ethersproject/sha2': 5.6.1
+      '@ethersproject/strings': 5.6.1
     dev: false
 
   /@ethersproject/strings/5.6.0:
@@ -2064,12 +2066,12 @@ packages:
   /@ethersproject/wallet/5.6.0:
     resolution: {integrity: sha512-qMlSdOSTyp0MBeE+r7SUhr1jjDlC1zAXB8VD84hCnpijPQiSNbxr6GdiLXxpUs8UKzkDiNYYC5DRI3MZr+n+tg==}
     dependencies:
-      '@ethersproject/abstract-provider': 5.6.0
-      '@ethersproject/abstract-signer': 5.6.0
+      '@ethersproject/abstract-provider': 5.6.1
+      '@ethersproject/abstract-signer': 5.6.2
       '@ethersproject/address': 5.6.1
       '@ethersproject/bignumber': 5.6.2
       '@ethersproject/bytes': 5.6.1
-      '@ethersproject/hash': 5.6.0
+      '@ethersproject/hash': 5.6.1
       '@ethersproject/hdnode': 5.6.0
       '@ethersproject/json-wallets': 5.6.0
       '@ethersproject/keccak256': 5.6.1
@@ -2084,11 +2086,11 @@ packages:
   /@ethersproject/web/5.6.0:
     resolution: {integrity: sha512-G/XHj0hV1FxI2teHRfCGvfBUHFmU+YOSbCxlAMqJklxSa7QMiHFQfAxvwY2PFqgvdkxEKwRNr/eCjfAPEm2Ctg==}
     dependencies:
-      '@ethersproject/base64': 5.6.0
+      '@ethersproject/base64': 5.6.1
       '@ethersproject/bytes': 5.6.1
       '@ethersproject/logger': 5.6.0
       '@ethersproject/properties': 5.6.0
-      '@ethersproject/strings': 5.6.0
+      '@ethersproject/strings': 5.6.1
     dev: false
 
   /@ethersproject/web/5.6.1:
@@ -2105,10 +2107,10 @@ packages:
     resolution: {integrity: sha512-q0bxNBfIX3fUuAo9OmjlEYxP40IB8ABgb7HjEZCL5IKubzV3j30CWi2rqQbjTS2HfoyQbfINoKcTVWP4ejwR7Q==}
     dependencies:
       '@ethersproject/bytes': 5.6.1
-      '@ethersproject/hash': 5.6.0
+      '@ethersproject/hash': 5.6.1
       '@ethersproject/logger': 5.6.0
       '@ethersproject/properties': 5.6.0
-      '@ethersproject/strings': 5.6.0
+      '@ethersproject/strings': 5.6.1
     dev: false
 
   /@humanwhocodes/config-array/0.9.5:
