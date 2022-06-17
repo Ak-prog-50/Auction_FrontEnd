@@ -1,14 +1,10 @@
 import { useWeb3Contract, useChain } from "react-moralis";
 import { useNotification } from "web3uikit";
 import abi from "../../settings/abi.json";
-import contractAddrs from "../../settings/contractAddresses.json";
 import Alert from "../Alert";
+import { IAuctionProps } from "../../containers/AuctionOpen";
 
-interface contractAddrsInterface {
-  [key: string]: string,
-}
-
-const EnterAuction = () => {
+const EnterAuction = ({addrs, chainId, auctionState} : IAuctionProps) => {
   const dispatch = useNotification();
   const handleSuccess = () => {
       dispatch({
@@ -26,9 +22,6 @@ const EnterAuction = () => {
     })
   }
 
-  const addrs: contractAddrsInterface = contractAddrs;
-  const { chainId: chainIdHex } = useChain();
-  const chainId = chainIdHex ? parseInt(chainIdHex, 16).toString() : null;
   const { runContractFunction : enter, isFetching, isLoading } =
     useWeb3Contract({
       abi: abi,
