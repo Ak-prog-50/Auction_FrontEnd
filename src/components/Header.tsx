@@ -1,10 +1,10 @@
 import { ConnectButton } from "web3uikit"
-import { ETHERSCAN_URL } from "../constants"
+import { ETHERSCAN_URL } from "../settings/constants"
 
 const Header = () => {
   return (
     <header>
-      <div className="max-w-screen-xl px-4 py-8 mx-auto sm:py-12 sm:px-6 lg:px-8">
+
         <div className="sm:justify-between sm:items-center sm:flex">
           <div className="text-center sm:text-left">
             <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">
@@ -44,7 +44,6 @@ const Header = () => {
 
           </div>
         </div>
-      </div>
     </header>
   );
 };
