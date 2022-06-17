@@ -1,451 +1,401 @@
 [
-    {
-      "inputs": [
-        {
-          "internalType": "contract AuctionNFT",
-          "name": "_auctionNFT",
-          "type": "address"
-        },
-        {
-          "internalType": "contract AuctionToken",
-          "name": "_auctionToken",
-          "type": "address"
-        },
-        {
-          "internalType": "address",
-          "name": "_auctionHost",
-          "type": "address"
-        },
-        {
-          "internalType": "string",
-          "name": "_NFTName",
-          "type": "string"
-        },
-        {
-          "internalType": "address",
-          "name": "_trustedForwarder",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "nonpayable",
-      "type": "constructor"
-    },
-    {
-      "inputs": [],
-      "name": "Auction__IsNotClosed",
-      "type": "error"
-    },
-    {
-      "inputs": [],
-      "name": "Auction__NFTNotEqual",
-      "type": "error"
-    },
-    {
-      "inputs": [],
-      "name": "Auction__NFTNotMinted",
-      "type": "error"
-    },
-    {
-      "inputs": [],
-      "name": "Auction__NoBidders",
-      "type": "error"
-    },
-    {
-      "inputs": [],
-      "name": "Auction__NoTokens",
-      "type": "error"
-    },
-    {
-      "inputs": [],
-      "name": "Auction__NotInTheRegisteringState",
-      "type": "error"
-    },
-    {
-      "inputs": [],
-      "name": "Auction__NotOpen",
-      "type": "error"
-    },
-    {
-      "inputs": [],
-      "name": "Auction__NotTheBidPrice",
-      "type": "error"
-    },
-    {
-      "inputs": [],
-      "name": "Auction__NotTheHighestBidder",
-      "type": "error"
-    },
-    {
-      "inputs": [],
-      "name": "Auction__RedeemPeriodIsNotOver",
-      "type": "error"
-    },
-    {
-      "inputs": [],
-      "name": "Auction__TieBid",
-      "type": "error"
-    },
-    {
-      "inputs": [],
-      "name": "Auction__TimeStandsStill",
-      "type": "error"
-    },
-    {
-      "inputs": [],
-      "name": "Auction__TransferFailed",
-      "type": "error"
-    },
-    {
-      "inputs": [],
-      "name": "Auction__ZeroBids",
-      "type": "error"
-    },
-    {
-      "anonymous": false,
-      "inputs": [],
-      "name": "NewAuctionRound",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "internalType": "address",
-          "name": "_bidder",
-          "type": "address"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "_bid",
-          "type": "uint256"
-        }
-      ],
-      "name": "NewBid",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "internalType": "address",
-          "name": "_bidder",
-          "type": "address"
-        },
-        {
-          "indexed": true,
-          "internalType": "uint256",
-          "name": "_bid",
-          "type": "uint256"
-        }
-      ],
-      "name": "NewHighestBid",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "internalType": "address",
-          "name": "previousOwner",
-          "type": "address"
-        },
-        {
-          "indexed": true,
-          "internalType": "address",
-          "name": "newOwner",
-          "type": "address"
-        }
-      ],
-      "name": "OwnershipTransferred",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "internalType": "address",
-          "name": "_redeemer",
-          "type": "address"
-        }
-      ],
-      "name": "Sold",
-      "type": "event"
-    },
-    {
-      "inputs": [],
-      "name": "MAX_REDEEM_PERIOD",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "endAuction",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "enter",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "forwarder",
-          "type": "address"
-        }
-      ],
-      "name": "isTrustedForwarder",
-      "outputs": [
-        {
-          "internalType": "bool",
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "openAuction",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "owner",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "_bid",
-          "type": "uint256"
-        }
-      ],
-      "name": "placeBid",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "redeem",
-      "outputs": [],
-      "stateMutability": "payable",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "renounceOwnership",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "s_NFTName",
-      "outputs": [
-        {
-          "internalType": "string",
-          "name": "",
-          "type": "string"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "s_auctionHost",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "s_auctionNFT",
-      "outputs": [
-        {
-          "internalType": "contract AuctionNFT",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "s_auctionState",
-      "outputs": [
-        {
-          "internalType": "enum AuctionEIP2771.AuctionState",
-          "name": "",
-          "type": "uint8"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "s_auctionToken",
-      "outputs": [
-        {
-          "internalType": "contract AuctionToken",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "s_bidders",
-      "outputs": [
-        {
-          "internalType": "bool",
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "name": "s_bids",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "bidder",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "bid",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "s_highestBid",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "highestBidder",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "highestBid",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "s_timeStart",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "startRegistering",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "newOwner",
-          "type": "address"
-        }
-      ],
-      "name": "transferOwnership",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "trustedForwarder",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "versionRecipient",
-      "outputs": [
-        {
-          "internalType": "string",
-          "name": "",
-          "type": "string"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    }
-  ]
+  {
+    "inputs": [
+      {
+        "internalType": "contract AuctionNFT",
+        "name": "_auctionNFT",
+        "type": "address"
+      },
+      {
+        "internalType": "contract AuctionToken",
+        "name": "_auctionToken",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_auctionHost",
+        "type": "address"
+      },
+      {
+        "internalType": "string",
+        "name": "_NFTName",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "inputs": [],
+    "name": "Auction__IsNotClosed",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Auction__NFTNotEqual",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Auction__NFTNotMinted",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Auction__NoBidders",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Auction__NoTokens",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Auction__NotInTheRegisteringState",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Auction__NotOpen",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Auction__NotTheBidPrice",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Auction__NotTheHighestBidder",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Auction__RedeemPeriodIsNotOver",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Auction__TieBid",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Auction__TimeStandsStill",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Auction__TransferFailed",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Auction__ZeroBids",
+    "type": "error"
+  },
+  {
+    "anonymous": false,
+    "inputs": [],
+    "name": "NewAuctionRound",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "_bidder",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_bid",
+        "type": "uint256"
+      }
+    ],
+    "name": "NewBid",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "_bidder",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "_bid",
+        "type": "uint256"
+      }
+    ],
+    "name": "NewHighestBid",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "previousOwner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "OwnershipTransferred",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_redeemer",
+        "type": "address"
+      }
+    ],
+    "name": "Sold",
+    "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "MAX_REDEEM_PERIOD",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "endAuction",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "enter",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "openAuction",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "owner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_bid",
+        "type": "uint256"
+      }
+    ],
+    "name": "placeBid",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "redeem",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "renounceOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "s_NFTName",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "s_auctionHost",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "s_auctionNFT",
+    "outputs": [
+      {
+        "internalType": "contract AuctionNFT",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "s_auctionState",
+    "outputs": [
+      {
+        "internalType": "enum Auction.AuctionState",
+        "name": "",
+        "type": "uint8"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "s_auctionToken",
+    "outputs": [
+      {
+        "internalType": "contract AuctionToken",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "s_bidders",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "s_bids",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "bidder",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "bid",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "s_highestBid",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "highestBidder",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "highestBid",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "s_timeStart",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "startRegistering",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "transferOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+]
