@@ -36,7 +36,7 @@ function App() {
     if (isWeb3Enabled) {
       fetchData();
     }
-  }, [isWeb3Enabled]);
+  }, [isWeb3Enabled, auctionState]);
 
   return (
     <>

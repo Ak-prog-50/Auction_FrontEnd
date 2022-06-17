@@ -4,14 +4,14 @@ import abi from "../../settings/abi.json";
 import Alert from "../Alert";
 import { IAuctionProps } from "../../containers/AuctionOpen";
 
-const EnterAuction = ({addrs, chainId, auctionState} : IAuctionProps) => {
+const EnterAuction = ({ addrs, chainId, auctionState }: IAuctionProps) => {
   const dispatch = useNotification();
   const handleSuccess = () => {
-      dispatch({
-          type: 'info',
-          title: 'Transaction Confirmed!',
-          position: 'topR',
-      });
+    dispatch({
+      type: "info",
+      title: "Transaction Confirmed!",
+      position: "topR",
+    });
   };
 
   const handleError = () => {
@@ -19,15 +19,18 @@ const EnterAuction = ({addrs, chainId, auctionState} : IAuctionProps) => {
       type: "error",
       title: "Tranaction Rejected!",
       position: "topR",
-    })
-  }
-
-  const { runContractFunction : enter, isFetching, isLoading } =
-    useWeb3Contract({
-      abi: abi,
-      contractAddress: chainId ? addrs[chainId] : undefined,
-      functionName: "enter",
     });
+  };
+
+  const {
+    runContractFunction: enter,
+    isFetching,
+    isLoading,
+  } = useWeb3Contract({
+    abi: abi,
+    contractAddress: chainId ? addrs[chainId] : undefined,
+    functionName: "enter",
+  });
   return (
     <>
       <button
@@ -36,12 +39,19 @@ const EnterAuction = ({addrs, chainId, auctionState} : IAuctionProps) => {
         onClick={async () => {
           await enter({
             onSuccess: handleSuccess,
-            onError: (err) => {console.log(`\nError in enter tx: ${err}`); handleError()}
+            onError: (err) => {
+              console.log(`\nError in enter tx: ${err}`);
+              handleError();
+            },
           });
         }}
         disabled={isFetching || isLoading}
       >
-        Enter Auction
+        {isLoading || isFetching ? (
+          <div className="animate-spin spinner-border h-8 w-8 border-b-2 rounded-full"></div>
+        ) : (
+          <div>Enter Auction</div>
+        )}
       </button>
     </>
   );

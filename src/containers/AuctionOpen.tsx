@@ -22,7 +22,7 @@ const AuctionOpen = ({ addrs, chainId, auctionState }: IAuctionProps) => {
             auctionState={auctionState}
           />
         ) : (
-          <PlaceBid />
+          <PlaceBid addrs={addrs} chainId={chainId} auctionState={auctionState}/>
         )}
       </div>
     </div>
