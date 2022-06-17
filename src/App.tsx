@@ -4,6 +4,7 @@ import abi from "./settings/abi.json";
 import contractAddrs from "./settings/contractAddresses.json";
 import { useMoralis, useWeb3Contract } from "react-moralis";
 import { useEffect, useState } from "react"
+import AuctionState from "./components/AuctionState";
 
 export interface IContractAddrs {
   [key: string]: string;
@@ -40,6 +41,7 @@ function App() {
     <>
       <div className="max-w-screen-xl px-4 py-8 mx-auto sm:py-12 sm:px-6 lg:px-8">
         <Header />
+        <AuctionState auctionState={auctionState}/>
         <AuctionOpen addrs={addrs} chainId={chainId} auctionState={auctionState}/>
       </div>
     </>

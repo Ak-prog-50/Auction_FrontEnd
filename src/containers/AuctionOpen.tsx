@@ -12,7 +12,6 @@ export interface IAuctionProps {
 const AuctionOpen = ({addrs, chainId, auctionState}: IAuctionProps) => {
   return (
     <div className="max-w-sm mx-auto space-y-5">
-      <p>aucionState : {auctionState}</p>
       <ProductCard />
 
       <div className="flex rounded-md shadow-sm justify-center" role="group">
