@@ -2,7 +2,7 @@ import { useWeb3Contract, useMoralis } from "react-moralis";
 import { IAuctionProps } from "./AuctionOpen";
 import abi from "../settings/abi.json";
 import { useEffect, useState } from "react";
-import { formatEther } from "@ethersproject/units";
+import { formatEther, parseEther } from "@ethersproject/units";
 import { useNotification } from "web3uikit";
 import Redeem from "../components/auctionActions/Redeem";
 
@@ -12,9 +12,10 @@ interface highestBid {
 }
 
 const AuctionClosed = ({ addrs, chainId, auctionState }: IAuctionProps) => {
-  let highestBidAmount: number = 0;
+  const [highestBidAmount, setHighestBidAmount] = useState("0");
   const [highestBidder, setHighestBidder] = useState("");
   const { isWeb3Enabled } = useMoralis();
+  const auctionAddress = chainId ? addrs[chainId] : undefined;
 
   const dispatch = useNotification();
   const handleSuccess = () => {
@@ -35,7 +36,7 @@ const AuctionClosed = ({ addrs, chainId, auctionState }: IAuctionProps) => {
 
   const { runContractFunction: getHighestBid } = useWeb3Contract({
     abi: abi,
-    contractAddress: chainId ? addrs[chainId] : undefined,
+    contractAddress: auctionAddress,
     functionName: "s_highestBid",
   });
 
@@ -45,9 +46,9 @@ const AuctionClosed = ({ addrs, chainId, auctionState }: IAuctionProps) => {
     isLoading: loadingRedeem,
   } = useWeb3Contract({
     abi: abi,
-    contractAddress: chainId ? addrs[chainId] : undefined,
+    contractAddress: auctionAddress,
     functionName: "redeem",
-    msgValue: highestBidAmount,
+    msgValue: parseEther(highestBidAmount).toString(),
   });
 
   const fetchBidder = async () => {
@@ -56,7 +57,7 @@ const AuctionClosed = ({ addrs, chainId, auctionState }: IAuctionProps) => {
       onError: (err) => console.log(`\nError in getting highestBid tx: ${err}`),
     })) as highestBid;
 
-    let highestBidAmount = formatEther(result.highestBid);
+    setHighestBidAmount(formatEther(result.highestBid));
     setHighestBidder(result.highestBidder);
   };
 
@@ -72,14 +73,15 @@ const AuctionClosed = ({ addrs, chainId, auctionState }: IAuctionProps) => {
           <h1 className="text-6xl font-medium py-8">Auction is Closed</h1>
 
           <p className="text-2xl pb-8 px-12 font-medium">
-            {highestBidAmount === 0 ? (
+            {/**//* Add another condition to check if the Sold event is emitted or highestbidder owns the nft */}
+            {highestBidAmount === "0" ? (
               <span>
                 No bids were placed. Please wait for the next auction to start.
               </span>
             ) : (
               <>
                 <span>
-                  The Highest Bid is ETH. If you are the highest bidder, please
+                  The Highest Bid is {highestBidAmount} ETH. If you are the highest bidder, please
                   redeem your NFT.
                 </span>
                 <Redeem

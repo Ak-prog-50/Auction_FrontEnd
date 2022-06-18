@@ -3,8 +3,9 @@ import { IAuctionProps } from "../containers/AuctionOpen";
 import abi from "../settings/abi.json";
 import approveABI from "../settings/approveABI.json";
 import increaseAllowanceABI from "../settings/increaseAllowanceABI.json";
-import { NFT_ADDR, ERC20_ADDR } from "../settings/constants";
+import { NFT_ADDR, ERC20_ADDR, NFT_TOKEN_ID } from "../settings/constants";
 import { useNotification } from "web3uikit";
+import { parseEther } from "@ethersproject/units";
 
 const AdminButtons = ({ addrs, chainId, auctionState, isOwner }: any) => {
   const dispatch = useNotification();
@@ -42,6 +43,10 @@ const AdminButtons = ({ addrs, chainId, auctionState, isOwner }: any) => {
     abi: increaseAllowanceABI,
     contractAddress: ERC20_ADDR,
     functionName: "increaseAllowance",
+    params: {
+      spender: chainId ? addrs[chainId] : undefined,
+      addedValue: parseEther("100")
+    }
   });
 
   const {
@@ -52,6 +57,10 @@ const AdminButtons = ({ addrs, chainId, auctionState, isOwner }: any) => {
     abi: approveABI,
     contractAddress: NFT_ADDR,
     functionName: "approve",
+    params: {
+      to: chainId ? addrs[chainId] : undefined,
+      tokenId: NFT_TOKEN_ID
+    }
   });
 
   const {
@@ -76,20 +85,23 @@ const AdminButtons = ({ addrs, chainId, auctionState, isOwner }: any) => {
 
   const initSetup = async () => {
     try {
-      await startRegistering({
-        onError: (err: Error) => {
-          throw err;
-        },
-      });
+      if (auctionState !== 1) {
+        await startRegistering({
+          onError: (err: Error) => {
+            throw(`\nError in start Registering tx: ${err}`);
+          },
+        });
+      }
+      // check if the allowance has already been made ( optional )
       await increaseAllowance({
         onError: (err: Error) => {
-          throw err;
+          throw(`\nError in increaseAllowance tx: ${err}`);
         },
       });
       await approveNFT({
         onSuccess: handleSuccess,
         onError: (err: Error) => {
-          throw err;
+          throw(`\nError in approveNFT tx: ${err}`);
         },
       });
     } catch (err) {
