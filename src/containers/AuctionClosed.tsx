@@ -12,7 +12,7 @@ interface highestBid {
 }
 
 const AuctionClosed = ({ addrs, chainId, auctionState }: IAuctionProps) => {
-  const [highestBidAmount, setHighestBidAmount] = useState("0");
+  const [highestBidAmount, setHighestBidAmount] = useState("0.0");
   const [highestBidder, setHighestBidder] = useState("");
   const { isWeb3Enabled } = useMoralis();
   const auctionAddress = chainId ? addrs[chainId] : undefined;
@@ -57,7 +57,7 @@ const AuctionClosed = ({ addrs, chainId, auctionState }: IAuctionProps) => {
       onError: (err) => console.log(`\nError in getting highestBid tx: ${err}`),
     })) as highestBid;
 
-    setHighestBidAmount(formatEther(result.highestBid));
+    setHighestBidAmount(formatEther(result.highestBid).toString());
     setHighestBidder(result.highestBidder);
   };
 
@@ -74,7 +74,8 @@ const AuctionClosed = ({ addrs, chainId, auctionState }: IAuctionProps) => {
 
           <p className="text-2xl pb-8 px-12 font-medium">
             {/**//* Add another condition to check if the Sold event is emitted or highestbidder owns the nft */}
-            {highestBidAmount === "0" ? (
+
+            {highestBidAmount === "0.0" ? (
               <span>
                 No bids were placed. Please wait for the next auction to start.
               </span>
