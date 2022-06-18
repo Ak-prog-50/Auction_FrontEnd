@@ -65,7 +65,7 @@ const AuctionClosed = ({ addrs, chainId, auctionState }: IAuctionProps) => {
   }, [isWeb3Enabled]);
 
   return (
-    <div className="w-8/12 m-auto py-16 min-h-screen flex items-center justify-center min-w-max">
+    <div className="w-8/12 m-auto py-16 min-h-full flex items-center justify-center min-w-max">
       <div className="bg-white shadow overflow-hidden sm:rounded-lg pb-8">
         <div className="border-t border-gray-200 text-center pt-8">
           <h1 className="text-9xl font-bold text-purple-400">!</h1>
