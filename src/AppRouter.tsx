@@ -8,6 +8,7 @@ import AuctionState from "./components/AuctionState";
 import AuctionClosed from "./containers/AuctionClosed";
 import Footer from "./components/Footer";
 import { Route, Routes } from "react-router-dom";
+import AdminPage from "./containers/AdminPage";
 
 export interface IContractAddrs {
   [key: string]: string;
@@ -69,9 +70,7 @@ function AppRouter() {
             }
           />
 
-          <Route path="/admin" element={<>
-            yes
-          </>}/>
+          <Route path="/admin" element={<AdminPage />}/>
 
 
         </Routes>
