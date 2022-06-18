@@ -1,7 +1,7 @@
 import EnterAuction from "../components/auctionActions/EnterAuction";
 import PlaceBid from "../components/auctionActions/PlaceBid";
 import ProductCard from "../components/ProductCard";
-import { IContractAddrs } from "../App";
+import { IContractAddrs } from "../AppRouter";
 
 export interface IAuctionProps {
   addrs: IContractAddrs;

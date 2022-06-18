@@ -7,12 +7,13 @@ import { useEffect, useState } from "react";
 import AuctionState from "./components/AuctionState";
 import AuctionClosed from "./containers/AuctionClosed";
 import Footer from "./components/Footer";
+import { Route, Routes } from "react-router-dom";
 
 export interface IContractAddrs {
   [key: string]: string;
 }
 
-function App() {
+function AppRouter() {
   const addrs: IContractAddrs = contractAddrs;
   const { chainId: chainIdHex, isWeb3Enabled } = useMoralis();
   const chainId = chainIdHex ? parseInt(chainIdHex, 16).toString() : null;
@@ -28,7 +29,8 @@ function App() {
     const auctionState = await getauctionState({
       onSuccess: (auctionState: any) =>
         console.log(auctionState, "auctionState"),
-      onError: (err: Error) => console.error("error in fetching auctionstate", err),
+      onError: (err: Error) =>
+        console.error("error in fetching auctionstate", err),
     });
     setAuctionState(auctionState as number);
   };
@@ -43,26 +45,40 @@ function App() {
     <>
       <div className="max-w-screen-xl px-4 py-8 mx-auto sm:py-12 sm:px-6 lg:px-8">
         <Header />
-
         <AuctionState auctionState={auctionState} />
-        {auctionState === 0 ? (
-          <AuctionClosed
-            addrs={addrs}
-            chainId={chainId}
-            auctionState={auctionState}
-          />
-        ) : (
-          <AuctionOpen
-            addrs={addrs}
-            chainId={chainId}
-            auctionState={auctionState}
-          />
-        )}
+        <Routes>
 
+          <Route
+            path="/"
+            element={
+              <>
+                {auctionState === 0 ? (
+                  <AuctionClosed
+                    addrs={addrs}
+                    chainId={chainId}
+                    auctionState={auctionState}
+                  />
+                ) : (
+                  <AuctionOpen
+                    addrs={addrs}
+                    chainId={chainId}
+                    auctionState={auctionState}
+                  />
+                )}
+              </>
+            }
+          />
+
+          <Route path="/admin" element={<>
+            yes
+          </>}/>
+
+
+        </Routes>
       </div>
       <Footer />
     </>
   );
 }
 
-export default App;
+export default AppRouter;

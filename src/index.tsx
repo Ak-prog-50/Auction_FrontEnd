@@ -1,9 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import App from "./App";
+import AppRouter from "./AppRouter";
 import { MoralisProvider } from "react-moralis";
 import { NotificationProvider } from "web3uikit";
+import { BrowserRouter } from "react-router-dom";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -11,9 +12,11 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <MoralisProvider initializeOnMount={false}>
-      <NotificationProvider>
-        <App />
-      </NotificationProvider>
+      <BrowserRouter>
+        <NotificationProvider>
+          <AppRouter />
+        </NotificationProvider>
+      </BrowserRouter>
     </MoralisProvider>
   </React.StrictMode>
 );
