@@ -27,7 +27,7 @@ function App() {
     const auctionState = await getauctionState({
       onSuccess: (auctionState: any) =>
         console.log(auctionState, "auctionState"),
-      onError: (err: Error) => console.error(err),
+      onError: (err: Error) => console.error("error in fetching auctionstate", err),
     });
     setAuctionState(auctionState as number);
   };
@@ -44,7 +44,11 @@ function App() {
         <Header />
         <AuctionState auctionState={auctionState} />
         {auctionState === 0 ? (
-          <AuctionClosed />
+          <AuctionClosed
+            addrs={addrs}
+            chainId={chainId}
+            auctionState={auctionState}
+          />
         ) : (
           <AuctionOpen
             addrs={addrs}
