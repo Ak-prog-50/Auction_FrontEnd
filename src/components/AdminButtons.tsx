@@ -6,7 +6,7 @@ import increaseAllowanceABI from "../settings/increaseAllowanceABI.json";
 import { NFT_ADDR, ERC20_ADDR } from "../settings/constants";
 import { useNotification } from "web3uikit";
 
-const AdminButtons = ({ addrs, chainId, auctionState }: IAuctionProps) => {
+const AdminButtons = ({ addrs, chainId, auctionState, isOwner }: any) => {
   const dispatch = useNotification();
   const handleSuccess = () => {
     dispatch({
@@ -103,7 +103,13 @@ const AdminButtons = ({ addrs, chainId, auctionState }: IAuctionProps) => {
       <button
         type="button"
         className="block w-1/3 focus:outline-none text-white bg-yellow-700 hover:bg-yellow-800 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-yellow-600 dark:hover:bg-yellow-700 dark:focus:ring-yellow-800"
-        onClick={initSetup}
+        onClick={() => {
+          if (!isOwner) {
+            handleError("Only owner can call admin functions!");
+            return;
+          }
+          initSetup();
+        }}
         disabled={
           fetchingRegistering ||
           loadingRegistering ||
@@ -129,6 +135,10 @@ const AdminButtons = ({ addrs, chainId, auctionState }: IAuctionProps) => {
         type="button"
         className="block w-1/3 text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
         onClick={async () => {
+          if (!isOwner) {
+            handleError("Only owner can call admin functions!");
+            return;
+          }
           await openAuction({
             onSuccess: handleSuccess,
             onError: () => handleError(),
@@ -146,6 +156,10 @@ const AdminButtons = ({ addrs, chainId, auctionState }: IAuctionProps) => {
         type="button"
         className="block w-1/3 focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
         onClick={async () => {
+          if (!isOwner) {
+            handleError("Only owner can call admin functions!");
+            return
+          }
           await endAuction({
             onSuccess: handleSuccess,
             onError: () => handleError(),
