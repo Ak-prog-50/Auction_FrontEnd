@@ -3,44 +3,23 @@ import AuctionOpen from "./containers/AuctionOpen";
 import abi from "./settings/abi.json";
 import contractAddrs from "./settings/contractAddresses.json";
 import { useMoralis, useWeb3Contract } from "react-moralis";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import AuctionState from "./components/AuctionState";
 import AuctionClosed from "./containers/AuctionClosed";
 import Footer from "./components/Footer";
 import { Route, Routes } from "react-router-dom";
 import AdminPage from "./containers/AdminPage";
+import { AuctionContext, IAuctionContext } from "./context/AuctionContext";
 
 export interface IContractAddrs {
   [key: string]: string;
 }
 
 function AppRouter() {
-  const addrs: IContractAddrs = contractAddrs;
-  const { chainId: chainIdHex, isWeb3Enabled } = useMoralis();
-  const chainId = chainIdHex ? parseInt(chainIdHex, 16).toString() : null;
-  const [auctionState, setAuctionState] = useState(0);
-
-  const { runContractFunction: getauctionState } = useWeb3Contract({
-    abi: abi,
-    contractAddress: chainId ? addrs[chainId] : undefined,
-    functionName: "s_auctionState",
-  });
-
-  const fetchData = async () => {
-    const auctionState = await getauctionState({
-      onSuccess: (auctionState: any) =>
-        console.log(auctionState, "auctionState"),
-      onError: (err: Error) =>
-        console.error("error in fetching auctionstate", err),
-    });
-    setAuctionState(auctionState as number);
-  };
-
-  useEffect(() => {
-    if (isWeb3Enabled) {
-      fetchData();
-    }
-  }, [isWeb3Enabled, auctionState]);
+  // const addrs: IContractAddrs = contractAddrs;
+  // const { chainId: chainIdHex, isWeb3Enabled } = useMoralis();
+  // const chainId = chainIdHex ? parseInt(chainIdHex, 16).toString() : null;
+  const { auctionState, chainId, addrs } = useContext(AuctionContext) as IAuctionContext ;
 
   return (
     <>

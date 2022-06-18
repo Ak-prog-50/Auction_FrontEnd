@@ -5,6 +5,7 @@ import AppRouter from "./AppRouter";
 import { MoralisProvider } from "react-moralis";
 import { NotificationProvider } from "web3uikit";
 import { BrowserRouter } from "react-router-dom";
+import AuctionProvider from "./context/AuctionContext";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -12,11 +13,13 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <MoralisProvider initializeOnMount={false}>
-      <BrowserRouter>
-        <NotificationProvider>
-          <AppRouter />
-        </NotificationProvider>
-      </BrowserRouter>
+      <AuctionProvider>
+        <BrowserRouter>
+          <NotificationProvider>
+            <AppRouter />
+          </NotificationProvider>
+        </BrowserRouter>
+      </AuctionProvider>
     </MoralisProvider>
   </React.StrictMode>
 );

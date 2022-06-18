@@ -1,40 +1,72 @@
-// import { createContext, useState } from "react";
-// import abi from "../settings/abi.json";
-// import contractAddrs from "../settings/contractAddresses.json";
-// import { useChain } from "react-moralis";
+import { createContext, useEffect, useState } from "react";
+import abi from "../settings/abi.json";
+import contractAddrs from "../settings/contractAddresses.json";
+import { useMoralis } from "react-moralis";
+import { TAuctionStateSetter, TGetAuctionState } from "../@auctionTypes";
+import { fetchData } from "../smartContractCalls/helperFunctions";
+import useAuctionCalls from "../smartContractCalls/useAuctionCalls";
+interface contractAddrsInterface {
+  [key: string]: string;
+}
 
-// interface contractAddrsInterface {
-//   [key: string]: string;
-// }
+export interface IAuctionContext {
+  addrs: contractAddrsInterface;
+  chainId: string | null;
+  abi: object | undefined;
+  auctionState: number;
+  setAuctionState: TAuctionStateSetter;
+  highestBidAmount: string;
+  setHighestBidAmount: React.Dispatch<React.SetStateAction<string>>;
+  highestBidder: string;
+  setHighestBidder: React.Dispatch<React.SetStateAction<string>>;
+}
 
-// interface AuctionContextInterface {
-//   addrs: contractAddrsInterface;
-//   chainId: string | null;
-//   abi: object | undefined;
-// }
+const intialState : IAuctionContext = {
+  addrs: contractAddrs,
+  chainId: null,
+  abi,
+  auctionState: 0,
+  setAuctionState: () => {},
+  highestBidAmount: "0.0",
+  setHighestBidAmount: () => {},
+  highestBidder: "",
+  setHighestBidder: () => {},
+};
 
-// const initialState: AuctionContextInterface = {
-//   addrs: contractAddrs,
-//   chainId: null,
-//   abi: abi,
-// };
+export const AuctionContext = createContext<IAuctionContext>(intialState);
 
-// export const AuctionContext = createContext(
-//   initialState as AuctionContextInterface
-// );
+const AuctionProvider = (props: any) => {
+  const { chainId: chainIdHex, isWeb3Enabled } = useMoralis();
+  const chainId = chainIdHex ? parseInt(chainIdHex, 16).toString() : null;
+  const addrs: contractAddrsInterface = contractAddrs;
+  const [auctionState, setAuctionState] = useState(intialState.auctionState);
+  const [highestBidAmount, setHighestBidAmount] = useState(intialState.highestBidAmount);
+  const [highestBidder, setHighestBidder] = useState(intialState.highestBidder);
 
-// const AuctionProvider = (props: any) => {
-//   const { chainId: chainIdHex } = useChain();
-//   const chainId = chainIdHex ? parseInt(chainIdHex, 16).toString() : null;
+  const { getAuctionState } = useAuctionCalls()
 
-//   const [auctionState, setAuctionState] = useState(initialState);
-//   return (
-//     <AuctionContext.Provider value={{auctionState, setAuctionState}}>
-//       <>{props.children}</>
-//     </AuctionContext.Provider>
-//   );
-// };
+  useEffect(() => {
+    if (isWeb3Enabled) fetchData(setAuctionState, getAuctionState as TGetAuctionState);
+  }, [isWeb3Enabled, auctionState])
+  
 
-// export default AuctionProvider;
+  return (
+    <AuctionContext.Provider
+      value={{
+        addrs,
+        chainId,
+        abi,
+        auctionState,
+        setAuctionState,
+        highestBidAmount,
+        setHighestBidAmount,
+        highestBidder,
+        setHighestBidder,
+      }}
+    >
+      <>{props.children}</>
+    </AuctionContext.Provider>
+  );
+};
 
-export {}
+export default AuctionProvider;
