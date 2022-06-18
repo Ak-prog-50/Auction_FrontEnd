@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@ethersproject/address': ^5.6.1
   '@ethersproject/units': ^5.6.1
   '@testing-library/jest-dom': ^5.16.4
   '@testing-library/react': ^13.3.0
@@ -24,6 +25,7 @@ specifiers:
   web3uikit: ^0.1.161
 
 dependencies:
+  '@ethersproject/address': 5.6.1
   '@ethersproject/units': 5.6.1
   '@testing-library/jest-dom': 5.16.4
   '@testing-library/react': 13.3.0_biqbaboplfbrettd7655fr4n2y
