@@ -11,7 +11,7 @@ const Footer = () => {
           </a>
         </li>
         <li>
-          <a href="https://github.com/ak-prog-50" target="_blank" className="mr-4 hover:underline md:mr-6">
+          <a href="/admin" className="mr-4 hover:underline md:mr-6">
             Admin Page
           </a>
         </li>
@@ -21,7 +21,7 @@ const Footer = () => {
           </a>
         </li>
         <li>
-          <a href="/admin" className="hover:underline">
+          <a href="https://github.com/ak-prog-50" target="_blank" className="hover:underline">
             Read More
           </a>
         </li>
