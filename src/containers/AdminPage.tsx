@@ -5,7 +5,7 @@ import { IAuctionProps } from "./AuctionOpen";
 const AdminPage = ({addrs, chainId, auctionState} : IAuctionProps) => {
   return (
     <>
-      <InfoCards />
+      <InfoCards auctionState={auctionState} />
       <AdminButtons addrs={addrs} chainId={chainId} auctionState={auctionState}/>
     </>
   );
