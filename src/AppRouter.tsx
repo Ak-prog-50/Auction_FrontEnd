@@ -48,7 +48,6 @@ function AppRouter() {
         <Header />
         <AuctionState auctionState={auctionState} />
         <Routes>
-
           <Route
             path="/"
             element={
@@ -70,9 +69,16 @@ function AppRouter() {
             }
           />
 
-          <Route path="/admin" element={<AdminPage />}/>
-
-
+          <Route
+            path="/admin"
+            element={
+              <AdminPage
+                addrs={addrs}
+                chainId={chainId}
+                auctionState={auctionState}
+              />
+            }
+          />
         </Routes>
       </div>
       <Footer />
