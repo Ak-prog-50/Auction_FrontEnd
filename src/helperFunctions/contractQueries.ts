@@ -1,4 +1,3 @@
-import React from "react";
 import { TAuctionStateSetter, TGetAuctionState } from "../@auctionTypes";
 import { getAddress } from "@ethersproject/address";
 import { handleError, handleSuccess, handleWarning } from "./notificationHandlers";
@@ -13,11 +12,11 @@ export const fetchData = async (
 ) => {
   await getAuctionState({
     onSuccess: (auctionState: any) => {
-      console.log(auctionState, "auctionState");
+      console.info("auctionState", auctionState);
       setAuctionState(auctionState as number)
     },
     onError: (err: Error) =>
-      console.error("error in fetching auctionstate", err),
+      console.error("\nError in fetching auctionstate", err),
   });
 };
 
@@ -47,7 +46,7 @@ export const redeemExecute = async (redeem: any, auctionAddress: string | undefi
     params: getRedeemOptions(auctionAddress, highestBidAmount),
     onSuccess: () => handleSuccess(dispatch),
     onError: (err: Error) => {
-      console.log(`\nError in redeem tx: ${err}`);
+      console.error(`\nError in redeem tx: ${err}`);
       handleError(dispatch);
     },
   });
@@ -56,8 +55,8 @@ export const redeemExecute = async (redeem: any, auctionAddress: string | undefi
 
 export const fetchBidder = async (getHighestBid: any, setHighestBidAmount: any, setHighestBidder: any) => {
   const result = (await getHighestBid({
-    onSuccess: (highestBid: any) => console.log("Highest Bid", highestBid),
-    onError: (err: Error) => console.log(`\nError in getting highestBid tx: ${err}`),
+    onSuccess: (highestBid: any) => console.info("Highest Bid", highestBid),
+    onError: (err: Error) => console.error(`\nError in getting highestBid tx: ${err}`),
   })) as IHighestBid;
 
   setHighestBidAmount(formatEther(result.highestBid).toString());

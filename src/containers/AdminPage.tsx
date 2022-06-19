@@ -1,14 +1,9 @@
 import InfoCards from "../components/InfoCards";
 import AdminButtons from "../components/AdminButtons";
-import { IAuctionProps } from "./AuctionOpen";
-import abi from "../settings/abi.json";
 import { useNotification } from "web3uikit";
-import { useWeb3Contract } from "react-moralis";
 import { useContext, useEffect, useState } from "react";
 import { useMoralis } from "react-moralis";
-import { getAddress } from "@ethersproject/address";
 import { AuctionContext, IAuctionContext } from "../context/AuctionContext";
-import { handleWarning } from "../helperFunctions/notificationHandlers";
 import useAuctionCalls from "../hooks/useAuctionCalls";
 import { checkOwnership } from "../helperFunctions/contractQueries";
 

@@ -1,9 +1,6 @@
 import Header from "./components/Header";
 import AuctionOpen from "./containers/AuctionOpen";
-import abi from "./settings/abi.json";
-import contractAddrs from "./settings/contractAddresses.json";
-import { useMoralis, useWeb3Contract } from "react-moralis";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import AuctionState from "./components/AuctionState";
 import AuctionClosed from "./containers/AuctionClosed";
 import Footer from "./components/Footer";

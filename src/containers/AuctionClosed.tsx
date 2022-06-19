@@ -1,14 +1,9 @@
-import { useWeb3Contract, useMoralis } from "react-moralis";
-import { IAuctionProps } from "./AuctionOpen";
-import abi from "../settings/abi.json";
-import { useContext, useEffect, useState } from "react";
-import { formatEther, parseEther } from "@ethersproject/units";
-import { useNotification } from "web3uikit";
+import { useMoralis } from "react-moralis";
+import { useContext, useEffect } from "react";
 import Redeem from "../components/auctionActions/Redeem";
 import { AuctionContext, IAuctionContext } from "../context/AuctionContext"
 import useAuctionCalls from "../hooks/useAuctionCalls";
 import { fetchBidder } from "../helperFunctions/contractQueries";
-
 export interface IHighestBid {
   highestBidder: string;
   highestBid: number;

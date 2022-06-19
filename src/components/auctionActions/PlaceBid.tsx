@@ -43,7 +43,7 @@ const PlaceBid = () => {
               params: options(event),
               onSuccess: () => handleSuccess(dispatch),
               onError: (err) => {
-                console.log(`\nError in placeBid tx: ${err}`);
+                console.error(`\nError in placeBid tx: ${err}`);
                 handleError(dispatch);
               },
             });

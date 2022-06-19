@@ -1,11 +1,5 @@
-import { useWeb3Contract } from "react-moralis";
-import { IAuctionProps } from "../containers/AuctionOpen";
-import abi from "../settings/abi.json";
-import approveABI from "../settings/approveABI.json";
-import increaseAllowanceABI from "../settings/increaseAllowanceABI.json";
-import { NFT_ADDR, ERC20_ADDR, NFT_TOKEN_ID } from "../settings/constants";
+
 import { useNotification } from "web3uikit";
-import { parseEther } from "@ethersproject/units";
 import { useContext } from "react";
 import { AuctionContext, IAuctionContext } from "../context/AuctionContext";
 import {

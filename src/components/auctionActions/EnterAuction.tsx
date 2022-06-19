@@ -1,8 +1,6 @@
-import { useWeb3Contract, useChain } from "react-moralis";
+import { useWeb3Contract } from "react-moralis";
 import { useNotification } from "web3uikit";
 import abi from "../../settings/abi.json";
-import Alert from "../Alert";
-import { IAuctionProps } from "../../containers/AuctionOpen";
 import { useContext } from "react";
 import { AuctionContext, IAuctionContext } from "../../context/AuctionContext";
 import { handleError, handleSuccess } from "../../helperFunctions/notificationHandlers";
@@ -29,7 +27,7 @@ const EnterAuction = () => {
           await enter({
             onSuccess: () => handleSuccess(dispatch),
             onError: (err) => {
-              console.log(`\nError in enter tx: ${err}`);
+              console.error(`\nError in enter tx: ${err}`);
               handleError(dispatch);
             },
           });
