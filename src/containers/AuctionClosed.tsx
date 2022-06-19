@@ -6,6 +6,7 @@ import { formatEther, parseEther } from "@ethersproject/units";
 import { useNotification } from "web3uikit";
 import Redeem from "../components/auctionActions/Redeem";
 import { AuctionContext, IAuctionContext } from "../context/AuctionContext"
+import useAuctionCalls from "../hooks/useAuctionCalls";
 
 interface highestBid {
   highestBidder: string;
@@ -17,24 +18,7 @@ const AuctionClosed = () => {
   // const [highestBidAmount, setHighestBidAmount] = useState("0.0");
   // const [highestBidder, setHighestBidder] = useState("");
   const { isWeb3Enabled } = useMoralis();
-  const auctionAddress = chainId ? addrs[chainId] : undefined;
-
-  const { runContractFunction: getHighestBid } = useWeb3Contract({
-    abi: abi,
-    contractAddress: auctionAddress,
-    functionName: "s_highestBid",
-  });
-
-  const {
-    runContractFunction: redeem,
-    isFetching: fetchingRedeem,
-    isLoading: loadingRedeem,
-  } = useWeb3Contract({
-    abi: abi,
-    contractAddress: auctionAddress,
-    functionName: "redeem",
-    msgValue: parseEther(highestBidAmount).toString(),
-  });
+  const { getHighestBid } = useAuctionCalls(addrs, chainId)
 
   const fetchBidder = async () => {
     const result = (await getHighestBid({
@@ -71,10 +55,6 @@ const AuctionClosed = () => {
                   redeem your NFT.
                 </span>
                 <Redeem
-                  redeem={redeem}
-                  isFetching={fetchingRedeem}
-                  isLoading={loadingRedeem}
-                  highestBidder={highestBidder}
                 />
               </>
             )}

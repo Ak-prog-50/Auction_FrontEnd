@@ -1,7 +1,9 @@
 import React from "react";
 import { TAuctionStateSetter, TGetAuctionState } from "../@auctionTypes";
 import { getAddress } from "@ethersproject/address";
-import { handleWarning } from "./notificationHandlers";
+import { handleError, handleSuccess, handleWarning } from "./notificationHandlers";
+import abi from "../settings/abi.json"
+import { parseEther } from "@ethersproject/units"
 
 const fetchData = async (
   setAuctionState: TAuctionStateSetter,
@@ -29,4 +31,24 @@ const checkOwnership = async (getOwner: any, account: string, dispatch: any, set
   }
 };
 
-export { fetchData, checkOwnership };
+const getRedeemOptions = (auctionAddress: string | undefined, highestBidAmount: string) => {
+  return {
+    abi: abi,
+    contractAddress: auctionAddress,
+    functionName: "redeem",
+    msgValue: parseEther(highestBidAmount).toString(),
+  } 
+}
+
+const redeemExecute = async (redeem: any, auctionAddress: string | undefined, highestBidAmount: string, dispatch: any) => {
+  await redeem({
+    params: getRedeemOptions(auctionAddress, highestBidAmount),
+    onSuccess: () => handleSuccess(dispatch),
+    onError: (err: Error) => {
+      console.log(`\nError in redeem tx: ${err}`);
+      handleError(dispatch);
+    },
+  });
+}
+
+export { fetchData, checkOwnership, redeemExecute };
