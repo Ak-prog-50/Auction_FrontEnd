@@ -19,23 +19,6 @@ const AuctionClosed = () => {
   const { isWeb3Enabled } = useMoralis();
   const auctionAddress = chainId ? addrs[chainId] : undefined;
 
-  const dispatch = useNotification();
-  const handleSuccess = () => {
-    dispatch({
-      type: "info",
-      title: "Transaction Confirmed!",
-      position: "topR",
-    });
-  };
-
-  const handleError = (errorMsg?: string) => {
-    dispatch({
-      type: "error",
-      title: errorMsg || "Tranaction Rejected!",
-      position: "topR",
-    });
-  };
-
   const { runContractFunction: getHighestBid } = useWeb3Contract({
     abi: abi,
     contractAddress: auctionAddress,
@@ -89,8 +72,6 @@ const AuctionClosed = () => {
                 </span>
                 <Redeem
                   redeem={redeem}
-                  handleSuccess={handleSuccess}
-                  handleError={handleError}
                   isFetching={fetchingRedeem}
                   isLoading={loadingRedeem}
                   highestBidder={highestBidder}
