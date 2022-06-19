@@ -1,4 +1,6 @@
-const handleSuccess = (dispatch: any, successMSg?: string) => {
+import { TNotificationDispatch } from "../@auctionTypes";
+
+const handleSuccess = (dispatch: TNotificationDispatch, successMSg?: string) => {
   dispatch({
     type: "info",
     title: successMSg || "Transaction Confirmed!",
@@ -6,7 +8,7 @@ const handleSuccess = (dispatch: any, successMSg?: string) => {
   });
 };
 
-const handleError = (dispatch: any, errorMsg?: string) => {
+const handleError = (dispatch: TNotificationDispatch, errorMsg?: string) => {
   dispatch({
     type: "error",
     title: errorMsg || "Tranaction Rejected!",
@@ -14,7 +16,7 @@ const handleError = (dispatch: any, errorMsg?: string) => {
   });
 };
 
-const handleWarning = (dispatch: any, warningMsg: string) => {
+const handleWarning = (dispatch: TNotificationDispatch, warningMsg: string) => {
   dispatch({
     type: "warning",
     title: warningMsg,

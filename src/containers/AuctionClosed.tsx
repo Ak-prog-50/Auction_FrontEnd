@@ -4,6 +4,7 @@ import Redeem from "../components/auctionActions/Redeem";
 import { AuctionContext, IAuctionContext } from "../context/AuctionContext";
 import useAuctionCalls from "../hooks/useAuctionCalls";
 import { fetchBidder } from "../helperFunctions/contractQueries";
+import { TGetHighestBid } from "../@auctionTypes";
 
 const AuctionClosed = () => {
   const {
@@ -18,7 +19,7 @@ const AuctionClosed = () => {
 
   useEffect(() => {
     if (isWeb3Enabled)
-      fetchBidder(getHighestBid, setHighestBidAmount, setHighestBidder);
+      fetchBidder(getHighestBid as TGetHighestBid, setHighestBidAmount, setHighestBidder);
   }, [isWeb3Enabled]);
 
   return (

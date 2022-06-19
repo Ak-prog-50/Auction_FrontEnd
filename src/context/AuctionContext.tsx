@@ -2,7 +2,12 @@ import { createContext, useEffect, useState } from "react";
 import abi from "../settings/abi.json";
 import contractAddrs from "../settings/contractAddresses.json";
 import { useMoralis } from "react-moralis";
-import { TAuctionStateSetter, TGetAuctionState } from "../@auctionTypes";
+import {
+  TAuctionStateSetter,
+  THighestBidAmountSetter,
+  TGetAuctionState,
+  THighestBidderSetter,
+} from "../@auctionTypes";
 import { fetchData } from "../helperFunctions/contractQueries";
 import useAuctionCalls from "../hooks/useAuctionCalls";
 import { IContractAddrs } from "../@auctionTypes";
@@ -14,9 +19,9 @@ export interface IAuctionContext {
   auctionState: number;
   setAuctionState: TAuctionStateSetter;
   highestBidAmount: string;
-  setHighestBidAmount: React.Dispatch<React.SetStateAction<string>>;
+  setHighestBidAmount: THighestBidAmountSetter;
   highestBidder: string;
-  setHighestBidder: React.Dispatch<React.SetStateAction<string>>;
+  setHighestBidder: THighestBidderSetter;
 }
 
 const intialStateValues = {
@@ -29,7 +34,7 @@ const intialStateValues = {
 
 export const AuctionContext = createContext<IAuctionContext | null>(null);
 
-const AuctionProvider = (props: any) => {
+const AuctionProvider = (props :any) => {
   const { chainId: chainIdHex, isWeb3Enabled } = useMoralis();
   const chainId = chainIdHex ? parseInt(chainIdHex, 16).toString() : null;
   const addrs: IContractAddrs = contractAddrs;

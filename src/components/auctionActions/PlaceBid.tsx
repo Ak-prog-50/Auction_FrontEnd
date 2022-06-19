@@ -4,6 +4,7 @@ import { AuctionContext, IAuctionContext } from "../../context/AuctionContext";
 import useAuctionCalls from "../../hooks/useAuctionCalls";
 import { placeBidExecute } from "../../helperFunctions/contractQueries";
 import Spinner from "../Spinner";
+import { TNotificationDispatch } from "../../@auctionTypes";
 
 const PlaceBid = () => {
   const { addrs, chainId } = useContext(AuctionContext) as IAuctionContext
@@ -17,9 +18,9 @@ const PlaceBid = () => {
         <Spinner dimensions={8} />
       ) : (
         <form
-          onSubmit={async (event: any) => {
+          onSubmit={async (event) => {
             event.preventDefault();
-            await placeBidExecute(event, placeBid, auctionAddress, dispatch)
+            await placeBidExecute(event, placeBid, auctionAddress, dispatch as TNotificationDispatch)
           }}
         >
           <label

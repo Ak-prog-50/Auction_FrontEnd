@@ -1,4 +1,4 @@
-import { TAuctionStateSetter, TGetAuctionState } from "../@auctionTypes";
+import { TAuctionStateSetter, TGetAuctionState, TGetHighestBid, TGetOwner, THighestBidAmountSetter, THighestBidderSetter, TIsOwnerSetter, TNotificationDispatch } from "../@auctionTypes";
 import { getAddress } from "@ethersproject/address";
 import {
   handleError,
@@ -9,15 +9,16 @@ import abi from "../settings/abi.json";
 import { parseEther } from "@ethersproject/units";
 import { IHighestBid } from "../@auctionTypes";
 import { formatEther } from "@ethersproject/units";
+import React from "react";
 
 export const fetchData = async (
   setAuctionState: TAuctionStateSetter,
   getAuctionState: TGetAuctionState
 ) => {
   await getAuctionState({
-    onSuccess: (auctionState: any) => {
+    onSuccess: (auctionState: number) => {
       console.info("auctionState", auctionState);
-      setAuctionState(auctionState as number);
+      setAuctionState(auctionState);
     },
     onError: (err: Error) =>
       console.error("\nError in fetching auctionstate", err),
@@ -25,10 +26,10 @@ export const fetchData = async (
 };
 
 export const checkOwnership = async (
-  getOwner: any,
+  getOwner: TGetOwner,
   account: string,
-  dispatch: any,
-  setIsOwner: any
+  dispatch: TNotificationDispatch,
+  setIsOwner: TIsOwnerSetter
 ) => {
   const owner = await getOwner({
     onError: (err: Error) => console.error("Error in getOwner", err),
@@ -59,7 +60,7 @@ export const redeemExecute = async (
   redeem: any,
   auctionAddress: string | undefined,
   highestBidAmount: string,
-  dispatch: any
+  dispatch: TNotificationDispatch
 ) => {
   await redeem({
     params: getRedeemOptions(auctionAddress, highestBidAmount),
@@ -88,7 +89,7 @@ export const placeBidExecute = async (
   evt: any,
   placeBid: any,
   auctionAddress: string | undefined,
-  dispatch: any
+  dispatch: TNotificationDispatch
 ) => {
   await placeBid({
     params: placeBidOptions(evt, auctionAddress),
@@ -101,12 +102,12 @@ export const placeBidExecute = async (
 };
 
 export const fetchBidder = async (
-  getHighestBid: any,
-  setHighestBidAmount: any,
-  setHighestBidder: any
+  getHighestBid: TGetHighestBid,
+  setHighestBidAmount: THighestBidAmountSetter,
+  setHighestBidder: THighestBidderSetter
 ) => {
   const result = (await getHighestBid({
-    onSuccess: (highestBid: any) => console.info("Highest Bid", highestBid),
+    onSuccess: (highestBid: IHighestBid) => console.info("Highest Bid", highestBid),
     onError: (err: Error) =>
       console.error(`\nError in getting highestBid tx: ${err}`),
   })) as IHighestBid;

@@ -9,7 +9,11 @@ import {
 import useAuctionCalls from "../../hooks/useAuctionCalls";
 import Spinner from "../Spinner";
 
-const AdminButtons = ({ isOwner }: any) => {
+interface IAdminButtonsProps {
+  isOwner: boolean
+}
+
+const AdminButtons = ({ isOwner }: IAdminButtonsProps) => {
   const { addrs, chainId, auctionState } = useContext(
     AuctionContext
   ) as IAuctionContext;

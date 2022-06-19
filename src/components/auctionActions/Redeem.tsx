@@ -7,6 +7,7 @@ import { useContext } from "react";
 import { AuctionContext, IAuctionContext } from "../../context/AuctionContext";
 import { redeemExecute } from "../../helperFunctions/contractQueries";
 import Spinner from "../Spinner";
+import { TNotificationDispatch } from "../../@auctionTypes";
 
 const Redeem = () => {
   const dispatch = useNotification();
@@ -32,7 +33,7 @@ const Redeem = () => {
             redeem,
             auctionAddress,
             highestBidAmount,
-            dispatch
+            dispatch as TNotificationDispatch
           );
         } else {
           handleError(dispatch, "You are not the highest bidder!");
