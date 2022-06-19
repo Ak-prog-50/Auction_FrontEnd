@@ -13,6 +13,12 @@ const useAuctionCalls = (addrs: IContractAddrs, chainId: string | null) => {
     functionName: "s_auctionState",
   });
 
+  const { runContractFunction: getOwner } = useWeb3Contract({
+    abi: abi,
+    contractAddress: chainId ? addrs[chainId] : undefined,
+    functionName: "owner",
+  });
+
   const {
     runContractFunction: startRegistering,
     isFetching: fetchingRegistering,
@@ -73,6 +79,7 @@ const useAuctionCalls = (addrs: IContractAddrs, chainId: string | null) => {
 
   return {
     getAuctionState,
+    getOwner,
     startRegistering,
     fetchingRegistering,
     loadingRegistering,
