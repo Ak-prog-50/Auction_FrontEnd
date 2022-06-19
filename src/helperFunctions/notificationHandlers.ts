@@ -15,11 +15,11 @@ const handleError = (dispatch: any, errorMsg?: string) => {
 };
 
 const handleWarning = (dispatch: any, warningMsg: string) => {
-    dispatch({
-      type: "warning",
-      title: warningMsg,
-      position: "topR",
-    });
-  };
+  dispatch({
+    type: "warning",
+    title: warningMsg,
+    position: "topR",
+  });
+};
 
-export { handleSuccess, handleError, handleWarning}
+export { handleSuccess, handleError, handleWarning };

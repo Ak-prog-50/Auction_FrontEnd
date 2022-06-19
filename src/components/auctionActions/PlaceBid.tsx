@@ -3,6 +3,7 @@ import { useContext } from "react";
 import { AuctionContext, IAuctionContext } from "../../context/AuctionContext";
 import useAuctionCalls from "../../hooks/useAuctionCalls";
 import { placeBidExecute } from "../../helperFunctions/contractQueries";
+import Spinner from "../Spinner";
 
 const PlaceBid = () => {
   const { addrs, chainId } = useContext(AuctionContext) as IAuctionContext
@@ -13,7 +14,7 @@ const PlaceBid = () => {
   return (
     <div className="block w-full">
       {fetchingPlaceBid || loadingPlaceBid ? (
-        <div className="animate-spin spinner-border h-8 w-8 border-b-2 rounded-full"></div>
+        <Spinner dimensions={8} />
       ) : (
         <form
           onSubmit={async (event: any) => {
@@ -25,7 +26,7 @@ const PlaceBid = () => {
             htmlFor="placeBid"
             className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-gray-300"
           >
-            Your Email
+            Your Bid
           </label>
           <div className="relative">
             <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none"></div>

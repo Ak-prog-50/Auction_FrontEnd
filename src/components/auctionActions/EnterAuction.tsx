@@ -3,6 +3,7 @@ import { useContext } from "react";
 import { AuctionContext, IAuctionContext } from "../../context/AuctionContext";
 import { handleError, handleSuccess } from "../../helperFunctions/notificationHandlers";
 import useAuctionCalls from "../../hooks/useAuctionCalls";
+import Spinner from "../Spinner";
 
 const EnterAuction = () => {
   const { addrs, chainId } = useContext(AuctionContext) as IAuctionContext;
@@ -26,7 +27,7 @@ const EnterAuction = () => {
         disabled={fetchingEnter || loadingEnter}
       >
         {fetchingEnter || loadingEnter ? (
-          <div className="animate-spin spinner-border h-8 w-8 border-b-2 rounded-full"></div>
+          <Spinner dimensions={8} />
         ) : (
           <div>Enter Auction</div>
         )}

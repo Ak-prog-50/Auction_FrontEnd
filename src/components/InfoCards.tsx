@@ -1,6 +1,6 @@
-import { mappedAuctionState } from "./AuctionState";
 import { AuctionContext, IAuctionContext } from "../context/AuctionContext";
 import { useContext } from "react";
+import { mapAuctionState } from "../helperFunctions/utils";
 
 // add highest bid from context
 const InfoCards = () => {
@@ -10,7 +10,7 @@ const InfoCards = () => {
       <div className="shadow-lg bg-red-400 border-l-8 hover:bg-red-500 mb-2 p-2 md:w-1/4 mx-2">
         <div className="p-4 flex flex-col">
           <a href="#" className="no-underline text-white text-2xl">
-            {mappedAuctionState(auctionState)}
+            {mapAuctionState(auctionState)}
           </a>
           <a
             href="https://www.etherscan.io"

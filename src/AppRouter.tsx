@@ -8,15 +8,8 @@ import { Route, Routes } from "react-router-dom";
 import AdminPage from "./containers/AdminPage";
 import { AuctionContext, IAuctionContext } from "./context/AuctionContext";
 
-export interface IContractAddrs {
-  [key: string]: string;
-}
-
 function AppRouter() {
-  // const addrs: IContractAddrs = contractAddrs;
-  // const { chainId: chainIdHex, isWeb3Enabled } = useMoralis();
-  // const chainId = chainIdHex ? parseInt(chainIdHex, 16).toString() : null;
-  const { auctionState, chainId, addrs } = useContext(AuctionContext) as IAuctionContext;
+  const { auctionState } = useContext(AuctionContext) as IAuctionContext;
 
   return (
     <>
@@ -27,25 +20,11 @@ function AppRouter() {
           <Route
             path="/"
             element={
-              <>
-                {auctionState === 0 ? (
-                  <AuctionClosed
-                  />
-                ) : (
-                  <AuctionOpen
-                  />
-                )}
-              </>
+              <>{auctionState === 0 ? <AuctionClosed /> : <AuctionOpen />}</>
             }
           />
 
-          <Route
-            path="/admin"
-            element={
-              <AdminPage
-              />
-            }
-          />
+          <Route path="/admin" element={<AdminPage />} />
         </Routes>
       </div>
       <Footer />

@@ -5,9 +5,7 @@ import { useMoralis } from "react-moralis";
 import { TAuctionStateSetter, TGetAuctionState } from "../@auctionTypes";
 import { fetchData } from "../helperFunctions/contractQueries";
 import useAuctionCalls from "../hooks/useAuctionCalls";
-export interface IContractAddrs {
-  [key: string]: string;
-}
+import { IContractAddrs } from "../@auctionTypes";
 
 export interface IAuctionContext {
   addrs: IContractAddrs;

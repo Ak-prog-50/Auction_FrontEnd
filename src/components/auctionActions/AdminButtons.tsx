@@ -1,12 +1,13 @@
 
 import { useNotification } from "web3uikit";
 import { useContext } from "react";
-import { AuctionContext, IAuctionContext } from "../context/AuctionContext";
+import { AuctionContext, IAuctionContext } from "../../context/AuctionContext";
 import {
   handleError,
   handleSuccess,
-} from "../helperFunctions/notificationHandlers";
-import useAuctionCalls from "../hooks/useAuctionCalls";
+} from "../../helperFunctions/notificationHandlers";
+import useAuctionCalls from "../../hooks/useAuctionCalls";
+import Spinner from "../Spinner";
 
 const AdminButtons = ({ isOwner }: any) => {
   const { addrs, chainId, auctionState } = useContext(
@@ -85,7 +86,7 @@ const AdminButtons = ({ isOwner }: any) => {
         loadingAllowance ||
         fetchingApprove ||
         loadingApprove ? (
-          <div className="animate-spin spinner-border h-5 w-5 border-b-2 rounded-full"></div>
+          <Spinner />
         ) : (
           <span>Start Registering & Approve Transfers</span>
         )}
@@ -106,7 +107,7 @@ const AdminButtons = ({ isOwner }: any) => {
         }}
       >
         {loadingOpenAuction || fetchingOpenAuction ? (
-          <div className="animate-spin spinner-border h-5 w-5 border-b-2 rounded-full"></div>
+          <Spinner />
         ) : (
           <span>Open Auction</span>
         )}
@@ -127,7 +128,7 @@ const AdminButtons = ({ isOwner }: any) => {
         }}
       >
         {loadingEndAuction || fetchingEndAuction ? (
-          <div className="animate-spin spinner-border h-5 w-5 border-b-2 rounded-full"></div>
+          <Spinner />
         ) : (
           <span>End Auction</span>
         )}

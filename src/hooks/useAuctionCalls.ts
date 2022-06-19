@@ -1,6 +1,6 @@
 import abi from "../settings/abi.json";
 import { useWeb3Contract, useWeb3ExecuteFunction } from "react-moralis";
-import { IContractAddrs } from "../context/AuctionContext";
+import { IContractAddrs } from "../@auctionTypes";
 import increaseAllowanceABI from "../settings/increaseAllowanceABI.json";
 import approveABI from "../settings/approveABI.json";
 import { ERC20_ADDR, NFT_ADDR, NFT_TOKEN_ID } from "../settings/constants";
@@ -8,7 +8,7 @@ import { parseEther } from "@ethersproject/units";
 
 const useAuctionCalls = (addrs: IContractAddrs, chainId: string | null) => {
   const auctionAddress = chainId ? addrs[chainId] : undefined;
-  
+
   const { runContractFunction: getAuctionState } = useWeb3Contract({
     abi: abi,
     contractAddress: auctionAddress,

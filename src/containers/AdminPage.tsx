@@ -1,5 +1,5 @@
 import InfoCards from "../components/InfoCards";
-import AdminButtons from "../components/AdminButtons";
+import AdminButtons from "../components/auctionActions/AdminButtons";
 import { useNotification } from "web3uikit";
 import { useContext, useEffect, useState } from "react";
 import { useMoralis } from "react-moralis";
@@ -11,8 +11,8 @@ const AdminPage = () => {
   const { addrs, chainId } = useContext(AuctionContext) as IAuctionContext;
   const dispatch = useNotification();
   const { isWeb3Enabled, account } = useMoralis();
-  const { getOwner } = useAuctionCalls(addrs, chainId)
-  const [ isOwner, setIsOwner ] = useState(false);
+  const { getOwner } = useAuctionCalls(addrs, chainId);
+  const [isOwner, setIsOwner] = useState(false);
 
   useEffect(() => {
     if (isWeb3Enabled) {
@@ -23,9 +23,7 @@ const AdminPage = () => {
   return (
     <>
       <InfoCards />
-      <AdminButtons
-        isOwner={isOwner}
-      />
+      <AdminButtons isOwner={isOwner} />
     </>
   );
 };

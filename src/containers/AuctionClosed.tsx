@@ -1,21 +1,24 @@
 import { useMoralis } from "react-moralis";
 import { useContext, useEffect } from "react";
 import Redeem from "../components/auctionActions/Redeem";
-import { AuctionContext, IAuctionContext } from "../context/AuctionContext"
+import { AuctionContext, IAuctionContext } from "../context/AuctionContext";
 import useAuctionCalls from "../hooks/useAuctionCalls";
 import { fetchBidder } from "../helperFunctions/contractQueries";
-export interface IHighestBid {
-  highestBidder: string;
-  highestBid: number;
-}
 
 const AuctionClosed = () => {
-  const { addrs, chainId, highestBidAmount, setHighestBidAmount, setHighestBidder } = useContext(AuctionContext) as IAuctionContext;
+  const {
+    addrs,
+    chainId,
+    highestBidAmount,
+    setHighestBidAmount,
+    setHighestBidder,
+  } = useContext(AuctionContext) as IAuctionContext;
   const { isWeb3Enabled } = useMoralis();
-  const { getHighestBid } = useAuctionCalls(addrs, chainId)
+  const { getHighestBid } = useAuctionCalls(addrs, chainId);
 
   useEffect(() => {
-    if (isWeb3Enabled) fetchBidder(getHighestBid, setHighestBidAmount, setHighestBidder);
+    if (isWeb3Enabled)
+      fetchBidder(getHighestBid, setHighestBidAmount, setHighestBidder);
   }, [isWeb3Enabled]);
 
   return (
@@ -26,7 +29,8 @@ const AuctionClosed = () => {
           <h1 className="text-6xl font-medium py-8">Auction is Closed</h1>
 
           <p className="text-2xl pb-8 px-12 font-medium">
-            {/**//* Add another condition to check if the Sold event is emitted or highestbidder owns the nft */}
+            {/**/
+            /* Add another condition to check if the Sold event is emitted or highestbidder owns the nft */}
 
             {highestBidAmount === "0.0" ? (
               <span>
@@ -35,11 +39,10 @@ const AuctionClosed = () => {
             ) : (
               <>
                 <span>
-                  The Highest Bid is {highestBidAmount} ETH. If you are the highest bidder, please
-                  redeem your NFT.
+                  The Highest Bid is {highestBidAmount} ETH. If you are the
+                  highest bidder, please redeem your NFT.
                 </span>
-                <Redeem
-                />
+                <Redeem />
               </>
             )}
           </p>
