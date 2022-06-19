@@ -27,7 +27,7 @@ const EnterAuction = () => {
         disabled={fetchingEnter || loadingEnter}
       >
         {fetchingEnter || loadingEnter ? (
-          <Spinner dimensions={8} />
+          <Spinner dimensions="lg" />
         ) : (
           <div>Enter Auction</div>
         )}

@@ -15,7 +15,7 @@ const PlaceBid = () => {
   return (
     <div className="block w-full">
       {fetchingPlaceBid || loadingPlaceBid ? (
-        <Spinner dimensions={8} />
+        <Spinner dimensions="lg" />
       ) : (
         <form
           onSubmit={async (event) => {

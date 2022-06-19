@@ -42,7 +42,7 @@ const Redeem = () => {
       disabled={fetchingRedeem || loadingRedeem}
     >
       {fetchingRedeem || loadingRedeem ? (
-        <Spinner dimensions={8} />
+        <Spinner dimensions="lg" />
       ) : (
         <span>Redeem NFT</span>
       )}
