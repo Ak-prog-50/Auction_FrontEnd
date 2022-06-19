@@ -20,15 +20,13 @@ function AppRouter() {
         <Routes>
           <Route
             path="/"
-            element={
-              <>{auctionState === 0 ? <AuctionClosed /> : <AuctionOpen />}</>
-            }
+            element={auctionState === 0 ? <AuctionClosed /> : <AuctionOpen />}
           />
 
           <Route path="/admin" element={<AdminPage />} />
         </Routes>
       </LayoutWrapper>
-      
+
       <Footer />
     </>
   );
