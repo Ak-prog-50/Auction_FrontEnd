@@ -4,7 +4,9 @@ import { mapAuctionState } from "../helperFunctions/utils";
 
 // add highest bid from context
 const InfoCards = () => {
-  const { auctionState } = useContext(AuctionContext) as IAuctionContext
+  const { auctionState, highestBidAmount } = useContext(
+    AuctionContext
+  ) as IAuctionContext;
   return (
     <div className="flex flex-1 flex-col md:flex-row lg:flex-row mx-2 mt-12">
       <div className="shadow-lg bg-red-400 border-l-8 hover:bg-red-500 mb-2 p-2 md:w-1/4 mx-2">
@@ -24,7 +26,7 @@ const InfoCards = () => {
       <div className="shadow bg-blue-400 border-l-8 hover:bg-blue-500 mb-2 p-2 md:w-1/4 mx-2">
         <div className="p-4 flex flex-col">
           <a href="#" className="no-underline text-white text-2xl">
-            0 ETH
+            {highestBidAmount} ETH
           </a>
           <a
             href="https://www.etherscan.io"
