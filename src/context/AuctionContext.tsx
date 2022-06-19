@@ -3,8 +3,8 @@ import abi from "../settings/abi.json";
 import contractAddrs from "../settings/contractAddresses.json";
 import { useMoralis } from "react-moralis";
 import { TAuctionStateSetter, TGetAuctionState } from "../@auctionTypes";
-import { fetchData } from "../smartContractCalls/helperFunctions";
-import useAuctionCalls from "../smartContractCalls/useAuctionCalls";
+import { fetchData } from "../helperFunctions";
+import useAuctionCalls from "../hooks/useAuctionCalls";
 export interface IContractAddrs {
   [key: string]: string;
 }
