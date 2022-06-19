@@ -7,13 +7,14 @@ import Footer from "./components/Footer";
 import { Route, Routes } from "react-router-dom";
 import AdminPage from "./containers/AdminPage";
 import { AuctionContext, IAuctionContext } from "./context/AuctionContext";
+import LayoutWrapper from "./components/LayoutWrapper";
 
 function AppRouter() {
   const { auctionState } = useContext(AuctionContext) as IAuctionContext;
 
   return (
     <>
-      <div className="max-w-screen-xl px-4 py-8 mx-auto sm:py-12 sm:px-6 lg:px-8">
+      <LayoutWrapper>
         <Header />
         <AuctionState />
         <Routes>
@@ -26,7 +27,8 @@ function AppRouter() {
 
           <Route path="/admin" element={<AdminPage />} />
         </Routes>
-      </div>
+      </LayoutWrapper>
+      
       <Footer />
     </>
   );
