@@ -5,12 +5,12 @@ import { useMoralis } from "react-moralis";
 import { TAuctionStateSetter, TGetAuctionState } from "../@auctionTypes";
 import { fetchData } from "../smartContractCalls/helperFunctions";
 import useAuctionCalls from "../smartContractCalls/useAuctionCalls";
-interface contractAddrsInterface {
+export interface IContractAddrs {
   [key: string]: string;
 }
 
 export interface IAuctionContext {
-  addrs: contractAddrsInterface;
+  addrs: IContractAddrs;
   chainId: string | null;
   abi: object | undefined;
   auctionState: number;
@@ -21,34 +21,36 @@ export interface IAuctionContext {
   setHighestBidder: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const intialState : IAuctionContext = {
+const intialStateValues = {
   addrs: contractAddrs,
-  chainId: null,
   abi,
   auctionState: 0,
-  setAuctionState: () => {},
   highestBidAmount: "0.0",
-  setHighestBidAmount: () => {},
   highestBidder: "",
-  setHighestBidder: () => {},
 };
 
-export const AuctionContext = createContext<IAuctionContext>(intialState);
+export const AuctionContext = createContext<IAuctionContext | null>(null);
 
 const AuctionProvider = (props: any) => {
   const { chainId: chainIdHex, isWeb3Enabled } = useMoralis();
   const chainId = chainIdHex ? parseInt(chainIdHex, 16).toString() : null;
-  const addrs: contractAddrsInterface = contractAddrs;
-  const [auctionState, setAuctionState] = useState(intialState.auctionState);
-  const [highestBidAmount, setHighestBidAmount] = useState(intialState.highestBidAmount);
-  const [highestBidder, setHighestBidder] = useState(intialState.highestBidder);
+  const addrs: IContractAddrs = contractAddrs;
+  const [auctionState, setAuctionState] = useState(
+    intialStateValues.auctionState
+  );
+  const [highestBidAmount, setHighestBidAmount] = useState(
+    intialStateValues.highestBidAmount
+  );
+  const [highestBidder, setHighestBidder] = useState(
+    intialStateValues.highestBidder
+  );
 
-  const { getAuctionState } = useAuctionCalls()
+  const { getAuctionState } = useAuctionCalls(addrs, chainId);
 
   useEffect(() => {
-    if (isWeb3Enabled) fetchData(setAuctionState, getAuctionState as TGetAuctionState);
-  }, [isWeb3Enabled, auctionState])
-  
+    if (isWeb3Enabled)
+      fetchData(setAuctionState, getAuctionState as TGetAuctionState);
+  }, [isWeb3Enabled, auctionState]);
 
   return (
     <AuctionContext.Provider

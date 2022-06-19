@@ -19,7 +19,7 @@ function AppRouter() {
   // const addrs: IContractAddrs = contractAddrs;
   // const { chainId: chainIdHex, isWeb3Enabled } = useMoralis();
   // const chainId = chainIdHex ? parseInt(chainIdHex, 16).toString() : null;
-  const { auctionState, chainId, addrs } = useContext(AuctionContext) as IAuctionContext ;
+  const { auctionState, chainId, addrs } = useContext(AuctionContext) as IAuctionContext;
 
   return (
     <>
