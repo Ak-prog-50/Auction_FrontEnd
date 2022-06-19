@@ -8,89 +8,54 @@ import { useNotification } from "web3uikit";
 import { parseEther } from "@ethersproject/units";
 import { useContext } from "react";
 import { AuctionContext, IAuctionContext } from "../context/AuctionContext";
-import { handleError, handleSuccess } from "../helperFunctions/notificationHandlers";
+import {
+  handleError,
+  handleSuccess,
+} from "../helperFunctions/notificationHandlers";
+import useAuctionCalls from "../hooks/useAuctionCalls";
 
 const AdminButtons = ({ isOwner }: any) => {
-  const { addrs, chainId, auctionState } = useContext(AuctionContext) as IAuctionContext;
+  const { addrs, chainId, auctionState } = useContext(
+    AuctionContext
+  ) as IAuctionContext;
   const dispatch = useNotification();
-
   const {
-    runContractFunction: startRegistering,
-    isFetching: fetchingRegistering,
-    isLoading: loadingRegistering,
-  } = useWeb3Contract({
-    abi: abi,
-    contractAddress: chainId ? addrs[chainId] : undefined,
-    functionName: "startRegistering",
-  });
-
-  const {
-    runContractFunction: increaseAllowance,
-    isFetching: fetchingAllowance,
-    isLoading: loadingAllowance,
-  } = useWeb3Contract({
-    abi: increaseAllowanceABI,
-    contractAddress: ERC20_ADDR,
-    functionName: "increaseAllowance",
-    params: {
-      spender: chainId ? addrs[chainId] : undefined,
-      addedValue: parseEther("100")
-    }
-  });
-
-  const {
-    runContractFunction: approveNFT,
-    isFetching: fetchingapprove,
-    isLoading: loadingapprove,
-  } = useWeb3Contract({
-    abi: approveABI,
-    contractAddress: NFT_ADDR,
-    functionName: "approve",
-    params: {
-      to: chainId ? addrs[chainId] : undefined,
-      tokenId: NFT_TOKEN_ID
-    }
-  });
-
-  const {
-    runContractFunction: openAuction,
-    isFetching: fetchingOpenAuction,
-    isLoading: loadingOpenAuction,
-  } = useWeb3Contract({
-    abi: abi,
-    contractAddress: chainId ? addrs[chainId] : undefined,
-    functionName: "openAuction",
-  });
-
-  const {
-    runContractFunction: endAuction,
-    isFetching: fetchingEndAuction,
-    isLoading: loadingEndAuction,
-  } = useWeb3Contract({
-    abi: abi,
-    contractAddress: chainId ? addrs[chainId] : undefined,
-    functionName: "endAuction",
-  });
+    startRegistering,
+    fetchingRegistering,
+    loadingRegistering,
+    increaseAllowance,
+    fetchingAllowance,
+    loadingAllowance,
+    approveNFT,
+    fetchingApprove,
+    loadingApprove,
+    openAuction,
+    fetchingOpenAuction,
+    loadingOpenAuction,
+    endAuction,
+    fetchingEndAuction,
+    loadingEndAuction,
+  } = useAuctionCalls(addrs, chainId);
 
   const initSetup = async () => {
     try {
       if (auctionState !== 1) {
         await startRegistering({
           onError: (err: Error) => {
-            throw(`\nError in start Registering tx: ${err}`);
+            throw `\nError in start Registering tx: ${err}`;
           },
         });
       }
       // check if the allowance has already been made ( optional )
       await increaseAllowance({
         onError: (err: Error) => {
-          throw(`\nError in increaseAllowance tx: ${err}`);
+          throw `\nError in increaseAllowance tx: ${err}`;
         },
       });
       await approveNFT({
         onSuccess: () => handleSuccess(dispatch),
         onError: (err: Error) => {
-          throw(`\nError in approveNFT tx: ${err}`);
+          throw `\nError in approveNFT tx: ${err}`;
         },
       });
     } catch (err) {
@@ -116,16 +81,16 @@ const AdminButtons = ({ isOwner }: any) => {
           loadingRegistering ||
           fetchingAllowance ||
           loadingAllowance ||
-          fetchingapprove ||
-          loadingapprove
+          fetchingApprove ||
+          loadingApprove
         }
       >
         {fetchingRegistering ||
         loadingRegistering ||
         fetchingAllowance ||
         loadingAllowance ||
-        fetchingapprove ||
-        loadingapprove ? (
+        fetchingApprove ||
+        loadingApprove ? (
           <div className="animate-spin spinner-border h-5 w-5 border-b-2 rounded-full"></div>
         ) : (
           <span>Start Registering & Approve Transfers</span>
@@ -159,7 +124,7 @@ const AdminButtons = ({ isOwner }: any) => {
         onClick={async () => {
           if (!isOwner) {
             handleError(dispatch, "Only owner can call admin functions!");
-            return
+            return;
           }
           await endAuction({
             onSuccess: () => handleSuccess(dispatch),
