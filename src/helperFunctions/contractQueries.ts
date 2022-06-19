@@ -1,4 +1,13 @@
-import { TAuctionStateSetter, TGetAuctionState, TGetHighestBid, TGetOwner, THighestBidAmountSetter, THighestBidderSetter, TIsOwnerSetter, TNotificationDispatch } from "../@auctionTypes";
+import {
+  TAuctionStateSetter,
+  TGetAuctionState,
+  TGetHighestBid,
+  TGetOwner,
+  THighestBidAmountSetter,
+  THighestBidderSetter,
+  TIsOwnerSetter,
+  TNotificationDispatch,
+} from "../@auctionTypes";
 import { getAddress } from "@ethersproject/address";
 import {
   handleError,
@@ -9,9 +18,8 @@ import abi from "../settings/abi.json";
 import { parseEther } from "@ethersproject/units";
 import { IHighestBid } from "../@auctionTypes";
 import { formatEther } from "@ethersproject/units";
-import React from "react";
 
-export const fetchData = async (
+export const fetchAuctionState = async (
   setAuctionState: TAuctionStateSetter,
   getAuctionState: TGetAuctionState
 ) => {
@@ -107,7 +115,8 @@ export const fetchBidder = async (
   setHighestBidder: THighestBidderSetter
 ) => {
   const result = (await getHighestBid({
-    onSuccess: (highestBid: IHighestBid) => console.info("Highest Bid", highestBid),
+    onSuccess: (highestBid: IHighestBid) =>
+      console.info("Highest Bid", highestBid),
     onError: (err: Error) =>
       console.error(`\nError in getting highestBid tx: ${err}`),
   })) as IHighestBid;

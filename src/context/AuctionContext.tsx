@@ -8,7 +8,7 @@ import {
   TGetAuctionState,
   THighestBidderSetter,
 } from "../@auctionTypes";
-import { fetchData } from "../helperFunctions/contractQueries";
+import { fetchAuctionState } from "../helperFunctions/contractQueries";
 import useAuctionCalls from "../hooks/useAuctionCalls";
 import { IContractAddrs } from "../@auctionTypes";
 
@@ -34,7 +34,7 @@ const intialStateValues = {
 
 export const AuctionContext = createContext<IAuctionContext | null>(null);
 
-const AuctionProvider = (props :any) => {
+const AuctionProvider = (props: any) => {
   const { chainId: chainIdHex, isWeb3Enabled } = useMoralis();
   const chainId = chainIdHex ? parseInt(chainIdHex, 16).toString() : null;
   const addrs: IContractAddrs = contractAddrs;
@@ -52,7 +52,7 @@ const AuctionProvider = (props :any) => {
 
   useEffect(() => {
     if (isWeb3Enabled)
-      fetchData(setAuctionState, getAuctionState as TGetAuctionState);
+      fetchAuctionState(setAuctionState, getAuctionState as TGetAuctionState);
   }, [isWeb3Enabled, auctionState]);
 
   return (
