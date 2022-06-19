@@ -5,25 +5,11 @@ import Alert from "../Alert";
 import { IAuctionProps } from "../../containers/AuctionOpen";
 import { useContext } from "react";
 import { AuctionContext, IAuctionContext } from "../../context/AuctionContext";
+import { handleError, handleSuccess } from "../../helperFunctions/notificationHandlers";
 
 const EnterAuction = () => {
   const { addrs, chainId, auctionState } = useContext(AuctionContext) as IAuctionContext;
   const dispatch = useNotification();
-  const handleSuccess = () => {
-    dispatch({
-      type: "info",
-      title: "Transaction Confirmed!",
-      position: "topR",
-    });
-  };
-
-  const handleError = () => {
-    dispatch({
-      type: "error",
-      title: "Tranaction Rejected!",
-      position: "topR",
-    });
-  };
 
   const {
     runContractFunction: enter,
@@ -41,10 +27,10 @@ const EnterAuction = () => {
         className="block w-full py-2 px-4 text-lg font-medium text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white"
         onClick={async () => {
           await enter({
-            onSuccess: handleSuccess,
+            onSuccess: () => handleSuccess(dispatch),
             onError: (err) => {
               console.log(`\nError in enter tx: ${err}`);
-              handleError();
+              handleError(dispatch);
             },
           });
         }}

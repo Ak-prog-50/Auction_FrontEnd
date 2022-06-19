@@ -5,25 +5,11 @@ import abi from "../../settings/abi.json";
 import { parseEther } from "@ethersproject/units";
 import { useContext } from "react";
 import { AuctionContext, IAuctionContext } from "../../context/AuctionContext";
+import { handleError, handleSuccess } from "../../helperFunctions/notificationHandlers";
 
 const PlaceBid = () => {
   const { addrs, chainId } = useContext(AuctionContext) as IAuctionContext
   const dispatch = useNotification();
-  const handleSuccess = () => {
-    dispatch({
-      type: "info",
-      title: "Transaction Confirmed!",
-      position: "topR",
-    });
-  };
-
-  const handleError = () => {
-    dispatch({
-      type: "error",
-      title: "Tranaction Rejected!",
-      position: "topR",
-    });
-  };
 
   const options = (evt: any) => {
     const bid: number = evt.target[0].value;
@@ -55,10 +41,10 @@ const PlaceBid = () => {
             event.preventDefault();
             await placeBid({
               params: options(event),
-              onSuccess: handleSuccess,
+              onSuccess: () => handleSuccess(dispatch),
               onError: (err) => {
                 console.log(`\nError in placeBid tx: ${err}`);
-                handleError();
+                handleError(dispatch);
               },
             });
           }}

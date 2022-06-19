@@ -8,6 +8,7 @@ import { useContext, useEffect, useState } from "react";
 import { useMoralis } from "react-moralis";
 import { getAddress } from "@ethersproject/address";
 import { AuctionContext, IAuctionContext } from "../context/AuctionContext";
+import { handleWarning } from "../helperFunctions/notificationHandlers";
 
 const AdminPage = () => {
   const { addrs, chainId, auctionState } = useContext(AuctionContext) as IAuctionContext;
@@ -15,17 +16,7 @@ const AdminPage = () => {
   const { isWeb3Enabled, account } = useMoralis();
   const [ isOwner, setIsOwner ] = useState(false);
 
-  const handleOwnershipWarning = (warningMsg?: string) => {
-    dispatch({
-      type: "warning",
-      title:
-        warningMsg ||
-        "You are not the owner of this contract. Only owner can call admin functions!",
-      position: "topR",
-    });
-  };
-
-  const { runContractFunction: getOwner } = useWeb3Contract({
+  const { runContractFunction: getOwner } = useWeb3Contract({//!
     abi: abi,
     contractAddress: chainId ? addrs[chainId] : undefined,
     functionName: "owner",
@@ -36,7 +27,7 @@ const AdminPage = () => {
       onError: (err) => console.error("Error in getOwner", err),
     });
     if (getAddress(owner as string) !== getAddress(account as string)) {
-      handleOwnershipWarning();
+      handleWarning(dispatch, "You are not the owner of this contract. Only owner can call admin functions!");
     } else {
       setIsOwner(true);
     }
