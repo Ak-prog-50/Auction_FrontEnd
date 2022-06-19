@@ -1,52 +1,24 @@
-import { IAuctionProps } from "../../containers/AuctionOpen";
-import { useWeb3ExecuteFunction } from "react-moralis";
 import { useNotification } from "web3uikit";
-import abi from "../../settings/abi.json";
-import { parseEther } from "@ethersproject/units";
 import { useContext } from "react";
 import { AuctionContext, IAuctionContext } from "../../context/AuctionContext";
-import { handleError, handleSuccess } from "../../helperFunctions/notificationHandlers";
+import useAuctionCalls from "../../hooks/useAuctionCalls";
+import { placeBidExecute } from "../../helperFunctions/contractQueries";
 
 const PlaceBid = () => {
   const { addrs, chainId } = useContext(AuctionContext) as IAuctionContext
   const dispatch = useNotification();
-
-  const options = (evt: any) => {
-    const bid: number = evt.target[0].value;
-    const bidString: string = bid.toString();
-    return {
-      abi: abi,
-      contractAddress: chainId ? addrs[chainId] : undefined,
-      functionName: "placeBid",
-      params: {
-        _bid: parseEther(bidString),
-      },
-    } 
-  }
-  
-
-  const {
-    fetch: placeBid,
-    isFetching,
-    isLoading,
-  } = useWeb3ExecuteFunction();
+  const { placeBid, fetchingPlaceBid, loadingPlaceBid } = useAuctionCalls(addrs, chainId)
+  const auctionAddress = chainId ? addrs[chainId] : undefined;
 
   return (
     <div className="block w-full">
-      {isLoading || isFetching ? (
+      {fetchingPlaceBid || loadingPlaceBid ? (
         <div className="animate-spin spinner-border h-8 w-8 border-b-2 rounded-full"></div>
       ) : (
         <form
           onSubmit={async (event: any) => {
             event.preventDefault();
-            await placeBid({
-              params: options(event),
-              onSuccess: () => handleSuccess(dispatch),
-              onError: (err) => {
-                console.error(`\nError in placeBid tx: ${err}`);
-                handleError(dispatch);
-              },
-            });
+            await placeBidExecute(event, placeBid, auctionAddress, dispatch)
           }}
         >
           <label
@@ -68,7 +40,7 @@ const PlaceBid = () => {
             <button
               type="submit"
               className="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-              disabled={isFetching || isLoading}
+              disabled={fetchingPlaceBid || loadingPlaceBid}
             >
               Bid
             </button>

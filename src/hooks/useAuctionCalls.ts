@@ -28,9 +28,25 @@ const useAuctionCalls = (addrs: IContractAddrs, chainId: string | null) => {
   });
 
   const {
+    runContractFunction: enterAuction,
+    isFetching: fetchingEnter,
+    isLoading: loadingEnter,
+  } = useWeb3Contract({
+    abi: abi,
+    contractAddress: chainId ? addrs[chainId] : undefined,
+    functionName: "enter",
+  });
+
+  const {
     fetch: redeem,
     isFetching: fetchingRedeem,
     isLoading: loadingRedeem,
+  } = useWeb3ExecuteFunction();
+
+  const {
+    fetch: placeBid,
+    isFetching: fetchingPlaceBid,
+    isLoading: loadingPlaceBid,
   } = useWeb3ExecuteFunction();
 
   const {
@@ -95,7 +111,13 @@ const useAuctionCalls = (addrs: IContractAddrs, chainId: string | null) => {
     getAuctionState,
     getOwner,
     getHighestBid,
+    enterAuction,
+    fetchingEnter,
+    loadingEnter,
     redeem,
+    placeBid,
+    fetchingPlaceBid,
+    loadingPlaceBid,
     fetchingRedeem,
     loadingRedeem,
     startRegistering,

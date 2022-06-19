@@ -52,6 +52,28 @@ export const redeemExecute = async (redeem: any, auctionAddress: string | undefi
   });
 }
 
+const placeBidOptions = (evt: any, auctionAddress: string | undefined) => {
+  const bid: number = evt.target[0].value;
+  const bidString: string = bid.toString();
+  return {
+    abi: abi,
+    contractAddress: auctionAddress,
+    functionName: "placeBid",
+    params: {
+      _bid: parseEther(bidString),
+    },
+  } 
+}
+
+export const placeBidExecute = async (evt:any, placeBid: any, auctionAddress: string | undefined, dispatch: any) => {
+  await placeBid({
+    params: placeBidOptions(evt, auctionAddress),
+    onSuccess: () => handleSuccess(dispatch),
+    onError: (err: Error) => {
+      console.error(`\nError in placeBid tx: ${err}`);
+      handleError(dispatch);
+    },
+  })}
 
 export const fetchBidder = async (getHighestBid: any, setHighestBidAmount: any, setHighestBidder: any) => {
   const result = (await getHighestBid({
