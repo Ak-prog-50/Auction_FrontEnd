@@ -3,8 +3,11 @@ import { useWeb3ExecuteFunction } from "react-moralis";
 import { useNotification } from "web3uikit";
 import abi from "../../settings/abi.json";
 import { parseEther } from "@ethersproject/units";
+import { useContext } from "react";
+import { AuctionContext, IAuctionContext } from "../../context/AuctionContext";
 
-const PlaceBid = ({ addrs, chainId, auctionState }: IAuctionProps) => {
+const PlaceBid = () => {
+  const { addrs, chainId } = useContext(AuctionContext) as IAuctionContext
   const dispatch = useNotification();
   const handleSuccess = () => {
     dispatch({

@@ -1,19 +1,21 @@
 import { useWeb3Contract, useMoralis } from "react-moralis";
 import { IAuctionProps } from "./AuctionOpen";
 import abi from "../settings/abi.json";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { formatEther, parseEther } from "@ethersproject/units";
 import { useNotification } from "web3uikit";
 import Redeem from "../components/auctionActions/Redeem";
+import { AuctionContext, IAuctionContext } from "../context/AuctionContext"
 
 interface highestBid {
   highestBidder: string;
   highestBid: number;
 }
 
-const AuctionClosed = ({ addrs, chainId, auctionState }: IAuctionProps) => {
-  const [highestBidAmount, setHighestBidAmount] = useState("0.0");
-  const [highestBidder, setHighestBidder] = useState("");
+const AuctionClosed = () => {
+  const { addrs, chainId, highestBidAmount, setHighestBidAmount, highestBidder, setHighestBidder } = useContext(AuctionContext) as IAuctionContext;
+  // const [highestBidAmount, setHighestBidAmount] = useState("0.0");
+  // const [highestBidder, setHighestBidder] = useState("");
   const { isWeb3Enabled } = useMoralis();
   const auctionAddress = chainId ? addrs[chainId] : undefined;
 

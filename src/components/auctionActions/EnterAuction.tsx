@@ -3,8 +3,11 @@ import { useNotification } from "web3uikit";
 import abi from "../../settings/abi.json";
 import Alert from "../Alert";
 import { IAuctionProps } from "../../containers/AuctionOpen";
+import { useContext } from "react";
+import { AuctionContext, IAuctionContext } from "../../context/AuctionContext";
 
-const EnterAuction = ({ addrs, chainId, auctionState }: IAuctionProps) => {
+const EnterAuction = () => {
+  const { addrs, chainId, auctionState } = useContext(AuctionContext) as IAuctionContext;
   const dispatch = useNotification();
   const handleSuccess = () => {
     dispatch({

@@ -4,11 +4,13 @@ import { IAuctionProps } from "./AuctionOpen";
 import abi from "../settings/abi.json";
 import { useNotification } from "web3uikit";
 import { useWeb3Contract } from "react-moralis";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useMoralis } from "react-moralis";
 import { getAddress } from "@ethersproject/address";
+import { AuctionContext, IAuctionContext } from "../context/AuctionContext";
 
-const AdminPage = ({ addrs, chainId, auctionState }: IAuctionProps) => {
+const AdminPage = () => {
+  const { addrs, chainId, auctionState } = useContext(AuctionContext) as IAuctionContext;
   const dispatch = useNotification();
   const { isWeb3Enabled, account } = useMoralis();
   const [ isOwner, setIsOwner ] = useState(false);
@@ -48,11 +50,8 @@ const AdminPage = ({ addrs, chainId, auctionState }: IAuctionProps) => {
 
   return (
     <>
-      <InfoCards auctionState={auctionState} />
+      <InfoCards />
       <AdminButtons
-        addrs={addrs}
-        chainId={chainId}
-        auctionState={auctionState}
         isOwner={isOwner}
       />
     </>

@@ -33,15 +33,9 @@ function AppRouter() {
               <>
                 {auctionState === 0 ? (
                   <AuctionClosed
-                    addrs={addrs}
-                    chainId={chainId}
-                    auctionState={auctionState}
                   />
                 ) : (
                   <AuctionOpen
-                    addrs={addrs}
-                    chainId={chainId}
-                    auctionState={auctionState}
                   />
                 )}
               </>
@@ -52,9 +46,6 @@ function AppRouter() {
             path="/admin"
             element={
               <AdminPage
-                addrs={addrs}
-                chainId={chainId}
-                auctionState={auctionState}
               />
             }
           />

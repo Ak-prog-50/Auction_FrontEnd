@@ -1,7 +1,10 @@
 import { mappedAuctionState } from "./AuctionState";
+import { AuctionContext, IAuctionContext } from "../context/AuctionContext";
+import { useContext } from "react";
 
 // add highest bid from context
-const InfoCards = ({auctionState} : any) => {
+const InfoCards = () => {
+  const { auctionState } = useContext(AuctionContext) as IAuctionContext
   return (
     <div className="flex flex-1 flex-col md:flex-row lg:flex-row mx-2 mt-12">
       <div className="shadow-lg bg-red-400 border-l-8 hover:bg-red-500 mb-2 p-2 md:w-1/4 mx-2">

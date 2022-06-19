@@ -6,8 +6,11 @@ import increaseAllowanceABI from "../settings/increaseAllowanceABI.json";
 import { NFT_ADDR, ERC20_ADDR, NFT_TOKEN_ID } from "../settings/constants";
 import { useNotification } from "web3uikit";
 import { parseEther } from "@ethersproject/units";
+import { useContext } from "react";
+import { AuctionContext, IAuctionContext } from "../context/AuctionContext";
 
-const AdminButtons = ({ addrs, chainId, auctionState, isOwner }: any) => {
+const AdminButtons = ({ isOwner }: any) => {
+  const { addrs, chainId, auctionState } = useContext(AuctionContext) as IAuctionContext;
   const dispatch = useNotification();
   const handleSuccess = () => {
     dispatch({
