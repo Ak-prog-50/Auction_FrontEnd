@@ -4,8 +4,10 @@ import { getAddress } from "@ethersproject/address";
 import { handleError, handleSuccess, handleWarning } from "./notificationHandlers";
 import abi from "../settings/abi.json"
 import { parseEther } from "@ethersproject/units"
+import { IHighestBid } from "../containers/AuctionClosed";
+import { formatEther } from "@ethersproject/units";
 
-const fetchData = async (
+export const fetchData = async (
   setAuctionState: TAuctionStateSetter,
   getAuctionState: TGetAuctionState
 ) => {
@@ -20,7 +22,7 @@ const fetchData = async (
 };
 
 
-const checkOwnership = async (getOwner: any, account: string, dispatch: any, setIsOwner: any ) => {
+export const checkOwnership = async (getOwner: any, account: string, dispatch: any, setIsOwner: any ) => {
   const owner = await getOwner({
     onError: (err: Error) => console.error("Error in getOwner", err),
   });
@@ -40,7 +42,7 @@ const getRedeemOptions = (auctionAddress: string | undefined, highestBidAmount: 
   } 
 }
 
-const redeemExecute = async (redeem: any, auctionAddress: string | undefined, highestBidAmount: string, dispatch: any) => {
+export const redeemExecute = async (redeem: any, auctionAddress: string | undefined, highestBidAmount: string, dispatch: any) => {
   await redeem({
     params: getRedeemOptions(auctionAddress, highestBidAmount),
     onSuccess: () => handleSuccess(dispatch),
@@ -51,4 +53,13 @@ const redeemExecute = async (redeem: any, auctionAddress: string | undefined, hi
   });
 }
 
-export { fetchData, checkOwnership, redeemExecute };
+
+export const fetchBidder = async (getHighestBid: any, setHighestBidAmount: any, setHighestBidder: any) => {
+  const result = (await getHighestBid({
+    onSuccess: (highestBid: any) => console.log("Highest Bid", highestBid),
+    onError: (err: Error) => console.log(`\nError in getting highestBid tx: ${err}`),
+  })) as IHighestBid;
+
+  setHighestBidAmount(formatEther(result.highestBid).toString());
+  setHighestBidder(result.highestBidder);
+};

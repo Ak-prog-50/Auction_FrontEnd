@@ -7,31 +7,20 @@ import { useNotification } from "web3uikit";
 import Redeem from "../components/auctionActions/Redeem";
 import { AuctionContext, IAuctionContext } from "../context/AuctionContext"
 import useAuctionCalls from "../hooks/useAuctionCalls";
+import { fetchBidder } from "../helperFunctions/contractQueries";
 
-interface highestBid {
+export interface IHighestBid {
   highestBidder: string;
   highestBid: number;
 }
 
 const AuctionClosed = () => {
-  const { addrs, chainId, highestBidAmount, setHighestBidAmount, highestBidder, setHighestBidder } = useContext(AuctionContext) as IAuctionContext;
-  // const [highestBidAmount, setHighestBidAmount] = useState("0.0");
-  // const [highestBidder, setHighestBidder] = useState("");
+  const { addrs, chainId, highestBidAmount, setHighestBidAmount, setHighestBidder } = useContext(AuctionContext) as IAuctionContext;
   const { isWeb3Enabled } = useMoralis();
   const { getHighestBid } = useAuctionCalls(addrs, chainId)
 
-  const fetchBidder = async () => {
-    const result = (await getHighestBid({
-      onSuccess: (highestBid: any) => console.log("Highest Bid", highestBid),
-      onError: (err) => console.log(`\nError in getting highestBid tx: ${err}`),
-    })) as highestBid;
-
-    setHighestBidAmount(formatEther(result.highestBid).toString());
-    setHighestBidder(result.highestBidder);
-  };
-
   useEffect(() => {
-    if (isWeb3Enabled) fetchBidder();
+    if (isWeb3Enabled) fetchBidder(getHighestBid, setHighestBidAmount, setHighestBidder);
   }, [isWeb3Enabled]);
 
   return (
