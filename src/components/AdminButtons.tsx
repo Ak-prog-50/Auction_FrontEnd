@@ -8,25 +8,11 @@ import { useNotification } from "web3uikit";
 import { parseEther } from "@ethersproject/units";
 import { useContext } from "react";
 import { AuctionContext, IAuctionContext } from "../context/AuctionContext";
+import { handleError, handleSuccess } from "../helperFunctions/notificationHandlers";
 
 const AdminButtons = ({ isOwner }: any) => {
   const { addrs, chainId, auctionState } = useContext(AuctionContext) as IAuctionContext;
   const dispatch = useNotification();
-  const handleSuccess = () => {
-    dispatch({
-      type: "info",
-      title: "Transaction Confirmed!",
-      position: "topR",
-    });
-  };
-
-  const handleError = (errorMsg?: string) => {
-    dispatch({
-      type: "error",
-      title: errorMsg || "Tranaction Rejected!",
-      position: "topR",
-    });
-  };
 
   const {
     runContractFunction: startRegistering,
@@ -102,14 +88,14 @@ const AdminButtons = ({ isOwner }: any) => {
         },
       });
       await approveNFT({
-        onSuccess: handleSuccess,
+        onSuccess: () => handleSuccess(dispatch),
         onError: (err: Error) => {
           throw(`\nError in approveNFT tx: ${err}`);
         },
       });
     } catch (err) {
       console.error("\nError in initial Setup:", err);
-      handleError();
+      handleError(dispatch);
     }
   };
 
@@ -120,7 +106,7 @@ const AdminButtons = ({ isOwner }: any) => {
         className="block w-1/3 focus:outline-none text-white bg-yellow-700 hover:bg-yellow-800 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-yellow-600 dark:hover:bg-yellow-700 dark:focus:ring-yellow-800"
         onClick={() => {
           if (!isOwner) {
-            handleError("Only owner can call admin functions!");
+            handleError(dispatch, "Only owner can call admin functions!");
             return;
           }
           initSetup();
@@ -151,12 +137,12 @@ const AdminButtons = ({ isOwner }: any) => {
         className="block w-1/3 text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
         onClick={async () => {
           if (!isOwner) {
-            handleError("Only owner can call admin functions!");
+            handleError(dispatch, "Only owner can call admin functions!");
             return;
           }
           await openAuction({
-            onSuccess: handleSuccess,
-            onError: () => handleError(),
+            onSuccess: () => handleSuccess(dispatch),
+            onError: () => handleError(dispatch),
           });
         }}
       >
@@ -172,12 +158,12 @@ const AdminButtons = ({ isOwner }: any) => {
         className="block w-1/3 focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
         onClick={async () => {
           if (!isOwner) {
-            handleError("Only owner can call admin functions!");
+            handleError(dispatch, "Only owner can call admin functions!");
             return
           }
           await endAuction({
-            onSuccess: handleSuccess,
-            onError: () => handleError(),
+            onSuccess: () => handleSuccess(dispatch),
+            onError: () => handleError(dispatch),
           });
         }}
       >
