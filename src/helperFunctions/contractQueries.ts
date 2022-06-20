@@ -131,20 +131,20 @@ export const initSetup = async (auctionState: number, startRegistering: TGeneric
     if (auctionState !== 1) {
       await startRegistering({
         onError: (err: Error) => {
-          throw `\nError in start Registering tx: ${err}`;
+          throw new Error(`\nError in start Registering tx: ${err}`);
         },
       });
     }
     // check if the allowance has already been made ( optional )
     await increaseAllowance({
       onError: (err: Error) => {
-        throw `\nError in increaseAllowance tx: ${err}`;
+        throw new Error(`\nError in increaseAllowance tx: ${err}`);
       },
     });
     await approveNFT({
       onSuccess: () => handleSuccess(dispatch),
       onError: (err: Error) => {
-        throw `\nError in approveNFT tx: ${err}`;
+        throw new Error(`\nError in approveNFT tx: ${err}`);
       },
     });
   } catch (err) {
