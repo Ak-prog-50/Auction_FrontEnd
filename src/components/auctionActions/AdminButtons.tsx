@@ -8,6 +8,7 @@ import {
 } from "../../helperFunctions/notificationHandlers";
 import useAuctionCalls from "../../hooks/useAuctionCalls";
 import Spinner from "../Spinner";
+import { initSetup } from "../../helperFunctions/contractQueries";
 
 interface IAdminButtonsProps {
   isOwner: boolean
@@ -36,32 +37,7 @@ const AdminButtons = ({ isOwner }: IAdminButtonsProps) => {
     loadingEndAuction,
   } = useAuctionCalls(addrs, chainId);
 
-  const initSetup = async () => {
-    try {
-      if (auctionState !== 1) {
-        await startRegistering({
-          onError: (err: Error) => {
-            throw `\nError in start Registering tx: ${err}`;
-          },
-        });
-      }
-      // check if the allowance has already been made ( optional )
-      await increaseAllowance({
-        onError: (err: Error) => {
-          throw `\nError in increaseAllowance tx: ${err}`;
-        },
-      });
-      await approveNFT({
-        onSuccess: () => handleSuccess(dispatch),
-        onError: (err: Error) => {
-          throw `\nError in approveNFT tx: ${err}`;
-        },
-      });
-    } catch (err) {
-      console.error("\nError in initial Setup:", err);
-      handleError(dispatch);
-    }
-  };
+
 
   return (
     <div className="mx-7 mt-12">
@@ -73,7 +49,7 @@ const AdminButtons = ({ isOwner }: IAdminButtonsProps) => {
             handleError(dispatch, "Only owner can call admin functions!");
             return;
           }
-          initSetup();
+          initSetup(auctionState, startRegistering, increaseAllowance, approveNFT, dispatch);
         }}
         disabled={
           fetchingRegistering ||

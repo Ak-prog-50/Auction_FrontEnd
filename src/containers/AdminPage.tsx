@@ -6,7 +6,7 @@ import { useMoralis } from "react-moralis";
 import { AuctionContext, IAuctionContext } from "../context/AuctionContext";
 import useAuctionCalls from "../hooks/useAuctionCalls";
 import { checkOwnership } from "../helperFunctions/contractQueries";
-import { TGetOwner, TNotificationDispatch } from "../@auctionTypes";
+import { TGetOwner } from "../@auctionTypes";
 
 const AdminPage = () => {
   const { addrs, chainId } = useContext(AuctionContext) as IAuctionContext;
@@ -17,7 +17,7 @@ const AdminPage = () => {
 
   useEffect(() => {
     if (isWeb3Enabled) {
-      checkOwnership(getOwner as TGetOwner, account as string, dispatch as TNotificationDispatch, setIsOwner);
+      checkOwnership(getOwner as TGetOwner, account as string, dispatch, setIsOwner);
     }
   }, [isWeb3Enabled, isOwner, account]);
 

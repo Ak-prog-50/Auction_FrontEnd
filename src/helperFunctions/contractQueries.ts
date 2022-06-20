@@ -1,5 +1,6 @@
 import {
   TAuctionStateSetter,
+  TGenericContractFunc,
   TGetAuctionState,
   TGetHighestBid,
   TGetOwner,
@@ -65,7 +66,7 @@ const getRedeemOptions = (
 };
 
 export const redeemExecute = async (
-  redeem: any,
+  redeem: TGenericContractFunc,
   auctionAddress: string | undefined,
   highestBidAmount: string,
   dispatch: TNotificationDispatch
@@ -95,7 +96,7 @@ const placeBidOptions = (evt: any, auctionAddress: string | undefined) => {
 
 export const placeBidExecute = async (
   evt: any,
-  placeBid: any,
+  placeBid: TGenericContractFunc,
   auctionAddress: string | undefined,
   dispatch: TNotificationDispatch
 ) => {
@@ -123,4 +124,31 @@ export const fetchBidder = async (
 
   setHighestBidAmount(formatEther(result.highestBid).toString());
   setHighestBidder(result.highestBidder);
+};
+
+export const initSetup = async (auctionState: number, startRegistering: TGenericContractFunc, increaseAllowance: TGenericContractFunc, approveNFT: TGenericContractFunc, dispatch: TNotificationDispatch) => {//!
+  try {
+    if (auctionState !== 1) {
+      await startRegistering({
+        onError: (err: Error) => {
+          throw `\nError in start Registering tx: ${err}`;
+        },
+      });
+    }
+    // check if the allowance has already been made ( optional )
+    await increaseAllowance({
+      onError: (err: Error) => {
+        throw `\nError in increaseAllowance tx: ${err}`;
+      },
+    });
+    await approveNFT({
+      onSuccess: () => handleSuccess(dispatch),
+      onError: (err: Error) => {
+        throw `\nError in approveNFT tx: ${err}`;
+      },
+    });
+  } catch (err) {
+    console.error("\nError in initial Setup:", err);
+    handleError(dispatch);
+  }
 };

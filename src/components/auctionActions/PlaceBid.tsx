@@ -4,12 +4,12 @@ import { AuctionContext, IAuctionContext } from "../../context/AuctionContext";
 import useAuctionCalls from "../../hooks/useAuctionCalls";
 import { placeBidExecute } from "../../helperFunctions/contractQueries";
 import Spinner from "../Spinner";
-import { TNotificationDispatch } from "../../@auctionTypes";
+import { handleSuccess } from "../../helperFunctions/notificationHandlers";
 
 const PlaceBid = () => {
   const { addrs, chainId } = useContext(AuctionContext) as IAuctionContext
   const dispatch = useNotification();
-  const { placeBid, fetchingPlaceBid, loadingPlaceBid } = useAuctionCalls(addrs, chainId)
+  const { placeBid, fetchingPlaceBid, loadingPlaceBid, increaseAllowance } = useAuctionCalls(addrs, chainId)
   const auctionAddress = chainId ? addrs[chainId] : undefined;
 
   return (
@@ -20,7 +20,11 @@ const PlaceBid = () => {
         <form
           onSubmit={async (event) => {
             event.preventDefault();
-            await placeBidExecute(event, placeBid, auctionAddress, dispatch as TNotificationDispatch)
+            // increase Allowance only if it is not already increased
+            await increaseAllowance({
+              onSuccess: () => handleSuccess(dispatch, "Allowance increased"),
+            });
+            await placeBidExecute(event, placeBid, auctionAddress, dispatch)
           }}
         >
           <label

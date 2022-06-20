@@ -33,6 +33,14 @@ export type TGetHighestBid = ({
   params: fetchParams,
 }: any) => Promise<IHighestBid>;
 
+export type TGenericContractFunc = ({
+  throwOnError,
+  onComplete,
+  onError,
+  onSuccess,
+  params: fetchParams,
+}: any) => Promise<unknown>;
+
 export type TNotificationDispatch = (props: PayloadType) => void;
 export interface IContractAddrs {
   [key: string]: string;
