@@ -1,12 +1,25 @@
 import { AuctionContext, IAuctionContext } from "../context/AuctionContext";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { mapAuctionState } from "../helperFunctions/utils";
+import { useMoralis } from "react-moralis";
+import useAuctionCalls from "../hooks/useAuctionCalls";
+import { fetchBidder } from "../helperFunctions/contractQueries";
+import { TGetHighestBid } from "../@auctionTypes";
 
 // add highest bid from context
 const InfoCards = () => {
-  const { auctionState, highestBidAmount } = useContext(
+  const { auctionState, highestBidAmount, setHighestBidAmount, setHighestBidder, addrs, chainId } = useContext(
     AuctionContext
   ) as IAuctionContext;
+
+  const { isWeb3Enabled } = useMoralis()
+  const { getHighestBid } = useAuctionCalls(addrs, chainId);
+  
+  useEffect(() => {
+    if (isWeb3Enabled)
+      fetchBidder(getHighestBid as TGetHighestBid, setHighestBidAmount, setHighestBidder);
+  }, [isWeb3Enabled]);
+
   return (
     <div className="flex flex-1 flex-col md:flex-row lg:flex-row mx-2 mt-12">
       <div className="shadow-lg bg-red-400 border-l-8 hover:bg-red-500 mb-2 p-2 md:w-1/4 mx-2">
