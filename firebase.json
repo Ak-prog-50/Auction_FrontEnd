@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "site": "gasless-auction",
     "public": "build",
     "ignore": [
       "firebase.json",
