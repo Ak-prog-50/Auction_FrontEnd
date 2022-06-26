@@ -21,9 +21,10 @@ const PlaceBid = () => {
           onSubmit={async (event) => {
             event.preventDefault();
             // increase Allowance only if it is not already increased
-            await increaseAllowance({
-              onSuccess: () => handleSuccess(dispatch, "Allowance increased"),
+            const tx: any = await increaseAllowance({
+              onSuccess: () => handleSuccess(dispatch, "Allowance will be increased! Please wait to place the Bid."),
             });
+            tx && await tx?.wait(1)
             await placeBidExecute(event, placeBid, auctionAddress, dispatch)
           }}
         >
