@@ -52,6 +52,11 @@
   },
   {
     "inputs": [],
+    "name": "Auction__NotAllowedToBurn",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "Auction__NotInTheRegisteringState",
     "type": "error"
   },
