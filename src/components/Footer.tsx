@@ -16,12 +16,12 @@ const Footer = () => {
           </a>
         </li>
         <li>
-          <a href="https://github.com/ak-prog-50" target="_blank" className="mr-4 hover:underline md:mr-6">
+          <a href="https://github.com/Ak-prog-50/Gasless_Auction" target="_blank" className="mr-4 hover:underline md:mr-6">
             Github
           </a>
         </li>
         <li>
-          <a href="https://github.com/ak-prog-50" target="_blank" className="hover:underline">
+          <a href="https://github.com/Ak-prog-50/Gasless_Auction#readme" target="_blank" className="hover:underline">
             Read More
           </a>
         </li>
