@@ -29,7 +29,7 @@ const EnterAuction = () => {
         {fetchingEnter || loadingEnter ? (
           <Spinner dimensions="lg" />
         ) : (
-          <div>Enter Auction</div>
+          <div>Get a Token</div>
         )}
       </button>
     </>
