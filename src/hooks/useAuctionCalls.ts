@@ -1,14 +1,23 @@
 import abi from "../settings/abi.json";
-import { useWeb3Contract, useWeb3ExecuteFunction } from "react-moralis";
+import { useMoralis, useWeb3Contract, useWeb3ExecuteFunction } from "react-moralis";
 import { IContractAddrs } from "../@auctionTypes";
 import increaseAllowanceABI from "../settings/increaseAllowanceABI.json";
 import approveABI from "../settings/approveABI.json";
-import { ERC20_ADDR, NFT_ADDR, NFT_TOKEN_ID } from "../settings/constants";
+import { NFT_TOKEN_ID } from "../settings/constants";
 import { parseEther } from "@ethersproject/units";
+import { getERC20Addr, getNFTAddr } from "../helperFunctions/auctionFactoryQueries";
 
 const useAuctionCalls = (addrs: IContractAddrs, chainId: string | null) => {
   const auctionAddressPre = window.location.pathname.split('/')[1];
   const auctionAddress = auctionAddressPre ? auctionAddressPre : undefined;
+  const { account } = useMoralis()
+  let erc20Addr: string = "";
+  let nftAddress: string = "";
+
+  (async function() {
+    erc20Addr = await getERC20Addr(account as string, auctionAddress as string);
+    nftAddress = await getNFTAddr(account as string, auctionAddress as string);
+  }())
 
   const { runContractFunction: getAuctionState } = useWeb3Contract({
     abi: abi,
@@ -66,7 +75,7 @@ const useAuctionCalls = (addrs: IContractAddrs, chainId: string | null) => {
     isLoading: loadingAllowance,
   } = useWeb3Contract({
     abi: increaseAllowanceABI,
-    contractAddress: ERC20_ADDR,
+    contractAddress: erc20Addr,
     functionName: "increaseAllowance",
     params: {
       spender: auctionAddress,
@@ -80,7 +89,7 @@ const useAuctionCalls = (addrs: IContractAddrs, chainId: string | null) => {
     isLoading: loadingApprove,
   } = useWeb3Contract({
     abi: approveABI,
-    contractAddress: NFT_ADDR,
+    contractAddress: nftAddress,
     functionName: "approve",
     params: {
       to: auctionAddress,

@@ -76,8 +76,41 @@ const getAuctionsByAddressQuery = async (accountAddress: string | null) => {
   return auctions;
 };
 
+const filterAuction = async (accountAddress: string, auctionAddress: string) => {
+  if (!accountAddress) return;
+  let auctionInfo: any[] = [];
+  const provider = new ethers.providers.Web3Provider(window?.ethereum);
+  const auctionFactoryContract = new ethers.Contract(
+    AUCTION_FACTORY_ADDRESS,
+    auctionFactoryAbi,
+    provider
+  );
+  try {
+    const auctionInfoList: [] = await auctionFactoryContract.getAuctionsByAddress(accountAddress);
+    // filter auctioninfo list by auctionaddress
+    auctionInfo = auctionInfoList.filter((auctionInfo: any) => auctionInfo.auction === auctionAddress);
+  } catch (error) {
+    console.error("Error in getAuctionsByAddressQuery: ", error);
+  }
+  return auctionInfo;
+}
+
+const getERC20Addr = async (accountAddress: string, auctionAddress: string) => {
+  const auctionInfo = await filterAuction(accountAddress, auctionAddress);
+  if (!auctionInfo) return;
+  return auctionInfo[0]?.auctionToken;
+}
+
+const getNFTAddr = async (accountAddress: string, auctionAddress: string) => {
+  const auctionInfo = await filterAuction(accountAddress, auctionAddress);
+  if (!auctionInfo) return;
+  return auctionInfo[0]?.auctionNFT;
+}
+
 export {
   createAuctionExecute,
   isAuctionNameTakenQuery,
   getAuctionsByAddressQuery,
+  getERC20Addr,
+  getNFTAddr,
 };

@@ -4,8 +4,8 @@ export const AUCTION_FACTORY_ADDRESS =
   "0x6b77C14a967061F3b31C9784bEa0E9CBAC51c354";
 
 export const FACTORY_BLOCKSCAN_URL = `https://mumbai.polygonscan.com/address/${AUCTION_FACTORY_ADDRESS}#readContract`;
-export const NFT_ADDR = "0x7272924794377Dd0EF0E92c0F675beb488b32443";
-export const ERC20_ADDR = "0x35f27f917C3F73DBD1015A39d0C63FecDBf43d6D";
+// export const NFT_ADDR = "0x7272924794377Dd0EF0E92c0F675beb488b32443";
+// export const ERC20_ADDR = "0x35f27f917C3F73DBD1015A39d0C63FecDBf43d6D";
 export const MAX_TOKENS = 100;
 export const NFT_TOKEN_ID = parseEther("0"); // parseEther is used as a replacement to BigNumber.from(0)
 
