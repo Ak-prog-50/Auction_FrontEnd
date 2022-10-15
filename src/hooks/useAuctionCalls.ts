@@ -17,6 +17,8 @@ const useAuctionCalls = (addrs: IContractAddrs, chainId: string | null) => {
   (async function() {
     erc20Addr = await getERC20Addr(account as string, auctionAddress as string);
     nftAddress = await getNFTAddr(account as string, auctionAddress as string);
+    console.log("erc20Addr", erc20Addr);
+    console.log("nftAddress", nftAddress);
   }())
 
   const { runContractFunction: getAuctionState } = useWeb3Contract({
@@ -75,7 +77,7 @@ const useAuctionCalls = (addrs: IContractAddrs, chainId: string | null) => {
     isLoading: loadingAllowance,
   } = useWeb3Contract({
     abi: increaseAllowanceABI,
-    contractAddress: erc20Addr,
+    contractAddress: "0x362B6379eF8E5346D9355c15D3E0130FC4DFFF40",
     functionName: "increaseAllowance",
     params: {
       spender: auctionAddress,
@@ -89,7 +91,7 @@ const useAuctionCalls = (addrs: IContractAddrs, chainId: string | null) => {
     isLoading: loadingApprove,
   } = useWeb3Contract({
     abi: approveABI,
-    contractAddress: nftAddress,
+    contractAddress: "0xaF25478773754c446E2226cF997245f8bA271DF3",
     functionName: "approve",
     params: {
       to: auctionAddress,
