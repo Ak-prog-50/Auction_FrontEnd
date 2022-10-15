@@ -1,4 +1,3 @@
-import { useWeb3ExecuteFunction } from "react-moralis";
 import { TNotificationDispatch } from "../@auctionTypes";
 import { handleError, handleSuccess } from "./notificationHandlers";
 import auctionFactoryAbi from "../settings/auctionFactoryAbi.json";
@@ -37,26 +36,22 @@ const createAuctionExecute = async (
   });
 };
 
-const isAuctionNameAvailableQuery = async (isAuctionNameAvailable: any, bytes32NameString: string) => {
-  let result;
-  await isAuctionNameAvailable({
-    params: {
-      abi: auctionFactoryAbi,
-      contractAddress: AUCTION_FACTORY_ADDRESS,
-      functionName: "s_auctionNameTaken",
-      params: {
-        _bytes32NameString: ethers.utils.hexValue(bytes32NameString),
-      }
-    },
-    onSuccess: (result: any) => {
-      console.log(`\nResult of isAuctionNameAvailableQuery:`, result);
-      result = result;
-    },
-    onError: (err: Error) => {
-      console.error(`\nError in isAuctionNameAvailableQuery:`, err);
-    }
-  })
-  return result;
+const isAuctionNameTakenQuery = async (bytes32NameString: string) => {
+  console.log("Getting provider")
+  const provider = new ethers.providers.Web3Provider(window?.ethereum)
+  console.log("Getting contract")
+  const auctionFactoryContract = new ethers.Contract(
+    AUCTION_FACTORY_ADDRESS,
+    auctionFactoryAbi,
+    provider
+  );
+  let isTaken;
+  try {
+    isTaken = await auctionFactoryContract.s_auctionNameTaken(bytes32NameString);
+  } catch (error) {
+    console.error("Error in isAuctionNameAvailableQuery: ", error);
+  }
+  return isTaken;
 }
 
-export { createAuctionExecute, isAuctionNameAvailableQuery };
+export { createAuctionExecute, isAuctionNameTakenQuery };

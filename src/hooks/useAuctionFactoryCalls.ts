@@ -1,10 +1,6 @@
-import { useWeb3Contract, useWeb3ExecuteFunction } from "react-moralis";
-import auctionFactoryAbi from "../settings/auctionFactoryAbi.json";
-import { AUCTION_FACTORY_ADDRESS } from "../settings/constants";
+import { useWeb3ExecuteFunction } from "react-moralis";
 
 const useAuctionFactoryCalls = () => {
-  const { fetch: isAuctionNameAvailable } = useWeb3ExecuteFunction();
-
   const {
     fetch: createAuction,
     isFetching: fetchingCreateAuction,
@@ -15,7 +11,6 @@ const useAuctionFactoryCalls = () => {
     createAuction,
     fetchingCreateAuction,
     loadingCreateAuction,
-    isAuctionNameAvailable,
   };
 };
 

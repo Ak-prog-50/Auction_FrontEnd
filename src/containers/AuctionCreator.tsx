@@ -1,7 +1,8 @@
 import { BigNumber, ethers } from "ethers";
 import { useState } from "react";
 import { useNotification } from "web3uikit";
-import { createAuctionExecute, isAuctionNameAvailableQuery } from "../helperFunctions/auctionFactoryQueries";
+import { createAuctionExecute, isAuctionNameTakenQuery } from "../helperFunctions/auctionFactoryQueries";
+import { handleWarning } from "../helperFunctions/notificationHandlers";
 import useAuctionFactoryCalls from "../hooks/useAuctionFactoryCalls";
 
 const AuctionList = () => {
@@ -23,7 +24,7 @@ const AuctionList = () => {
 
 const CreateAuctionForm = () => {
   const dispatch = useNotification()
-  const { createAuction, isAuctionNameAvailable } = useAuctionFactoryCalls()
+  const { createAuction } = useAuctionFactoryCalls()
   const handleOnSubmit = async (e: any) => {
     e.preventDefault();
     console.log("Submitted");
@@ -38,8 +39,11 @@ const CreateAuctionForm = () => {
     ]
     const keccak256AbiEncodedNameString = ethers.utils.solidityKeccak256(["string"], [formData.auction_name])
     console.log("keccak256AbiEncodedNameString", keccak256AbiEncodedNameString)
-    const res = await isAuctionNameAvailableQuery(isAuctionNameAvailable, keccak256AbiEncodedNameString)
-    console.log("res", res)
+    const isAuctionNameTaken = await isAuctionNameTakenQuery(keccak256AbiEncodedNameString)
+    if (isAuctionNameTaken) {
+      handleWarning(dispatch, "Auction name is already taken. Please choose another name.")
+      return;
+    }
     await createAuctionExecute(createAuctionArgs, createAuction, dispatch)
 
   };
