@@ -1,4 +1,3 @@
-
 import { useNotification } from "web3uikit";
 import { useContext } from "react";
 import { AuctionContext, IAuctionContext } from "../../context/AuctionContext";
@@ -9,10 +8,10 @@ import {
 import useAuctionCalls from "../../hooks/useAuctionCalls";
 import Spinner from "../Spinner";
 import { initSetup } from "../../helperFunctions/contractQueries";
-import { ETHERSCAN_URL } from "../../settings/constants";
+import { GET_BLOCKSCAN_URL } from "../../settings/constants";
 
 interface IAdminButtonsProps {
-  isOwner: boolean
+  isOwner: boolean;
 }
 
 const AdminButtons = ({ isOwner }: IAdminButtonsProps) => {
@@ -38,8 +37,6 @@ const AdminButtons = ({ isOwner }: IAdminButtonsProps) => {
     loadingEndAuction,
   } = useAuctionCalls(addrs, chainId);
 
-
-
   return (
     <div className="mx-7 mt-12">
       <button
@@ -50,7 +47,13 @@ const AdminButtons = ({ isOwner }: IAdminButtonsProps) => {
             handleError(dispatch, "Only owner can call admin functions!");
             return;
           }
-          initSetup(auctionState, startRegistering, increaseAllowance, approveNFT, dispatch);
+          initSetup(
+            auctionState,
+            startRegistering,
+            increaseAllowance,
+            approveNFT,
+            dispatch
+          );
         }}
         disabled={
           fetchingRegistering ||
@@ -118,7 +121,7 @@ const AdminButtons = ({ isOwner }: IAdminButtonsProps) => {
       <button
         type="button"
         className="block w-1/3 focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-900"
-        onClick={() => window.location.href = ETHERSCAN_URL}
+        onClick={() => (window.location.href = GET_BLOCKSCAN_URL(""))}
       >
         <span>Withdraw Funds</span>
       </button>
