@@ -1,20 +1,44 @@
 import { BigNumber, ethers } from "ethers";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useMoralis } from "react-moralis";
 import { useNotification } from "web3uikit";
-import { createAuctionExecute, isAuctionNameTakenQuery } from "../helperFunctions/auctionFactoryQueries";
+import {
+  createAuctionExecute,
+  getAuctionsByAddressQuery,
+  isAuctionNameTakenQuery,
+} from "../helperFunctions/auctionFactoryQueries";
 import { handleWarning } from "../helperFunctions/notificationHandlers";
 import useAuctionFactoryCalls from "../hooks/useAuctionFactoryCalls";
+import { GET_BLOCKSCAN_URL } from "../settings/constants";
+import Spinner from "../components/Spinner";
 
 const AuctionList = () => {
-  const [auctions] = useState(["The Villa House Auction", "Gems Auction"]);
+  const [auctions, setAuctions] = useState([""]);
+  const { account, isWeb3Enabled, isWeb3EnableLoading } = useMoralis();
+
+  useEffect(() => {
+    if (!isWeb3Enabled || isWeb3EnableLoading) return;
+    async function fetchAuctionFactoryData() {
+      const auctions = await getAuctionsByAddressQuery(account);
+      console.log("auctions", auctions);
+      setAuctions(auctions as []);
+    }
+    fetchAuctionFactoryData();
+  }, [account, isWeb3Enabled, isWeb3EnableLoading]);
 
   return (
-    <div className="m-10 bg-slate-500">
+    <div className="m-10 bg-slate-300">
       <h2 className="text-2xl underline">Your Auctions</h2>
       <ol>
         {auctions.map((i) => (
           <li key={auctions.indexOf(i)}>
-            <a href="">{i}</a>
+            <a
+              href={GET_BLOCKSCAN_URL(i)}
+              target="_blank"
+              className="text-blue-900 bold no-underline hover:underline hover:text-blue-700"
+            >
+              {i}
+            </a>
           </li>
         ))}
       </ol>
@@ -23,8 +47,9 @@ const AuctionList = () => {
 };
 
 const CreateAuctionForm = () => {
-  const dispatch = useNotification()
-  const { createAuction } = useAuctionFactoryCalls()
+  const dispatch = useNotification();
+  const { createAuction, fetchingCreateAuction, loadingCreateAuction } =
+    useAuctionFactoryCalls();
   const handleOnSubmit = async (e: any) => {
     e.preventDefault();
     console.log("Submitted");
@@ -36,16 +61,23 @@ const CreateAuctionForm = () => {
       `${formData.auction_name}-coin`,
       `${formData.auction_name}-c`,
       formData.max_bids ? formData.max_bids : BigNumber.from(10).pow(17),
-    ]
-    const keccak256AbiEncodedNameString = ethers.utils.solidityKeccak256(["string"], [formData.auction_name])
-    console.log("keccak256AbiEncodedNameString", keccak256AbiEncodedNameString)
-    const isAuctionNameTaken = await isAuctionNameTakenQuery(keccak256AbiEncodedNameString)
+    ];
+    const keccak256AbiEncodedNameString = ethers.utils.solidityKeccak256(
+      ["string"],
+      [formData.auction_name]
+    );
+    console.log("keccak256AbiEncodedNameString", keccak256AbiEncodedNameString);
+    const isAuctionNameTaken = await isAuctionNameTakenQuery(
+      keccak256AbiEncodedNameString
+    );
     if (isAuctionNameTaken) {
-      handleWarning(dispatch, "Auction name is already taken. Please choose another name.")
+      handleWarning(
+        dispatch,
+        "Auction name is already taken. Please choose another name."
+      );
       return;
     }
-    await createAuctionExecute(createAuctionArgs, createAuction, dispatch)
-
+    await createAuctionExecute(createAuctionArgs, createAuction, dispatch);
   };
   return (
     <form
@@ -112,7 +144,6 @@ const CreateAuctionForm = () => {
       </div>
 
       <div className="flex flex-wrap -mx-3 mb-6">
-
         <div className="w-full md:w-1/2 px-3">
           <label
             className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -129,10 +160,13 @@ const CreateAuctionForm = () => {
           />
         </div>
       </div>
-
-      <button type="submit" form="create_auction_form" className="mt-5">
-        Create Auction
-      </button>
+      {fetchingCreateAuction || loadingCreateAuction ? (
+        <Spinner dimensions="lg" />
+      ) : (
+        <button type="submit" form="create_auction_form" className="mt-5">
+          Create Auction
+        </button>
+      )}
     </form>
   );
 };
