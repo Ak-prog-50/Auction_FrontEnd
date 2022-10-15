@@ -12,6 +12,7 @@ import useAuctionFactoryCalls from "../hooks/useAuctionFactoryCalls";
 import { GET_BLOCKSCAN_URL } from "../settings/constants";
 import Spinner from "../components/Spinner";
 import { getAuctionName } from "../helperFunctions/contractQueries";
+import { Link } from "react-router-dom";
 
 const AuctionList = () => {
   const [auctions, setAuctions] = useState<string[]>([]);
@@ -51,13 +52,12 @@ const AuctionList = () => {
       <ol>
         {auctions.map((i) => (
           <li key={auctions.indexOf(i)}>
-            <a
-              href={GET_BLOCKSCAN_URL(i)}
-              target="_blank"
+            <Link
+              to={i}
               className="text-blue-900 bold no-underline hover:underline hover:text-blue-700"
             >
               {auctionNames[auctions.indexOf(i)]}
-            </a>
+            </Link>
           </li>
         ))}
       </ol>

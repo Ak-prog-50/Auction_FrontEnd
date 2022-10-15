@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import abi from "../settings/abi.json";
-import contractAddrs from "../settings/contractAddresses.json";
+// import contractAddrs from "../settings/contractAddresses.json";
 import { useMoralis } from "react-moralis";
 import {
   TAuctionStateSetter,
@@ -11,7 +11,6 @@ import {
 import { fetchAuctionState } from "../helperFunctions/contractQueries";
 import useAuctionCalls from "../hooks/useAuctionCalls";
 import { IContractAddrs } from "../@auctionTypes";
-
 export interface IAuctionContext {
   addrs: IContractAddrs;
   chainId: string | null;
@@ -22,10 +21,11 @@ export interface IAuctionContext {
   setHighestBidAmount: THighestBidAmountSetter;
   highestBidder: string;
   setHighestBidder: THighestBidderSetter;
+  // locationPathName: string;
 }
 
 const intialStateValues = {
-  addrs: contractAddrs,
+  // addrs: contractAddrs,
   abi,
   auctionState: 0,
   highestBidAmount: "0.0",
@@ -35,9 +35,11 @@ const intialStateValues = {
 export const AuctionContext = createContext<IAuctionContext | null>(null);
 
 const AuctionProvider = (props: any) => {
+  const location = window.location;
   const { chainId: chainIdHex, isWeb3Enabled } = useMoralis();
   const chainId = chainIdHex ? parseInt(chainIdHex, 16).toString() : null;
-  const addrs: IContractAddrs = contractAddrs;
+  const addrs: IContractAddrs = { "80001": location.pathname.split("/")[1] };
+  // const [locationPathName, setLocationPathName] = useState(location.pathname);
   const [auctionState, setAuctionState] = useState(
     intialStateValues.auctionState
   );
@@ -67,6 +69,7 @@ const AuctionProvider = (props: any) => {
         setHighestBidAmount,
         highestBidder,
         setHighestBidder,
+        // locationPathName,
       }}
     >
       <>{props.children}</>

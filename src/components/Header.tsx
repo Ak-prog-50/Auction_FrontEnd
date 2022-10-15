@@ -1,7 +1,11 @@
+import { useContext } from "react";
+import { useLocation } from "react-router-dom";
 import { ConnectButton } from "web3uikit";
-import { FACTORY_BLOCKSCAN_URL } from "../settings/constants";
+import { AuctionContext, IAuctionContext } from "../context/AuctionContext";
+import { FACTORY_BLOCKSCAN_URL, GET_BLOCKSCAN_URL } from "../settings/constants";
 
 const Header = () => {
+  const location = useLocation()
   return (
     <header>
       <div className="sm:justify-between sm:items-center sm:flex">
@@ -16,7 +20,7 @@ const Header = () => {
             className="inline-flex items-center justify-center px-5 py-3 text-gray-500 transition border border-gray-200 rounded-lg hover:text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring"
             type="button"
           >
-            <a href={FACTORY_BLOCKSCAN_URL} target="_blank" rel="noreferrer">
+            <a href={location.pathname === '/' ? FACTORY_BLOCKSCAN_URL : GET_BLOCKSCAN_URL(window.location.pathname.split('/')[1])} target="_blank" rel="noreferrer">
               <span className="text-sm font-medium"> View At Etherscan </span>
             </a>
 

@@ -10,4 +10,4 @@ export const MAX_TOKENS = 100;
 export const NFT_TOKEN_ID = parseEther("0"); // parseEther is used as a replacement to BigNumber.from(0)
 
 export const GET_BLOCKSCAN_URL = (contractAddr: string) =>
-  `https://mumbai.polygonscan.com/address/${contractAddr}#readContract`;
+  `https://mumbai.polygonscan.com/address/${contractAddr}`;
