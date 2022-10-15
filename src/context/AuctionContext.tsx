@@ -53,9 +53,12 @@ const AuctionProvider = (props: any) => {
   const { getAuctionState } = useAuctionCalls(addrs, chainId);
 
   useEffect(() => {
-    if (isWeb3Enabled)
+    const item = window.location.pathname.split('/')[1];
+    if (isWeb3Enabled && item) {
+      console.log("fetching auction state", item);
       fetchAuctionState(setAuctionState, getAuctionState as TGetAuctionState);
-  }, [isWeb3Enabled, auctionState]);
+    }
+  }, [isWeb3Enabled, auctionState, window.location.pathname]);
 
   return (
     <AuctionContext.Provider

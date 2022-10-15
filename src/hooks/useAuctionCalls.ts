@@ -7,7 +7,8 @@ import { ERC20_ADDR, NFT_ADDR, NFT_TOKEN_ID } from "../settings/constants";
 import { parseEther } from "@ethersproject/units";
 
 const useAuctionCalls = (addrs: IContractAddrs, chainId: string | null) => {
-  const auctionAddress = chainId ? addrs[chainId] : undefined;
+  const auctionAddressPre = window.location.pathname.split('/')[1];
+  const auctionAddress = auctionAddressPre ? auctionAddressPre : undefined;
 
   const { runContractFunction: getAuctionState } = useWeb3Contract({
     abi: abi,

@@ -11,8 +11,22 @@ const Footer = () => {
       <ul className="flex flex-wrap items-center mt-3 text-sm text-gray-500 dark:text-gray-400 sm:mt-0">
         <li>
           <a href="/" className="mr-4 hover:underline md:mr-6 ">
-            Auction Creator
+            Auction Creator & Viewer
           </a>
+
+          </li>
+        {locationRouterDom.pathname !== "/" && locationRouterDom.pathname !== "" && (
+          <li>
+            <Link
+              to={`/${window.location.pathname.split("/")[1]}`}
+              className="mr-4 hover:underline md:mr-6"
+            >
+              Auction Page
+            </Link>
+          </li>
+        )}
+        <li>
+
         </li>
         {locationRouterDom.pathname !== "/" && locationRouterDom.pathname !== "" && (
           <li>
@@ -24,7 +38,6 @@ const Footer = () => {
             </Link>
           </li>
         )}
-
         <li>
           <a
             href="https://github.com/Ak-prog-50/Gasless_Auction"
