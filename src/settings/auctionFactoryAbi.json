@@ -1,0 +1,192 @@
+[
+  {
+    "inputs": [],
+    "name": "AuctionFactory__NameAlreadyTaken",
+    "type": "error"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "_auctionName",
+        "type": "bytes32"
+      },
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "auctionCreator",
+            "type": "address"
+          },
+          {
+            "internalType": "contract Auction",
+            "name": "auction",
+            "type": "address"
+          },
+          {
+            "internalType": "contract AuctionNFT",
+            "name": "auctionNFT",
+            "type": "address"
+          },
+          {
+            "internalType": "contract AuctionToken",
+            "name": "auctionToken",
+            "type": "address"
+          }
+        ],
+        "indexed": false,
+        "internalType": "struct AuctionFactory.AuctionInfo",
+        "name": "_auctionInfo",
+        "type": "tuple"
+      }
+    ],
+    "name": "AuctionCreated",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "_auctionName",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_NFTName",
+        "type": "string"
+      },
+      {
+        "internalType": "address",
+        "name": "_nftAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "string",
+        "name": "_coinName",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_coinSymbol",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_coinMaxTokens",
+        "type": "uint256"
+      }
+    ],
+    "name": "createAuction",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "name": "s_auctionNameTaken",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "s_auctionNamesByAddress",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "s_auctions",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "auctionCreator",
+        "type": "address"
+      },
+      {
+        "internalType": "contract Auction",
+        "name": "auction",
+        "type": "address"
+      },
+      {
+        "internalType": "contract AuctionNFT",
+        "name": "auctionNFT",
+        "type": "address"
+      },
+      {
+        "internalType": "contract AuctionToken",
+        "name": "auctionToken",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "name": "s_auctionsMappedByName",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "auctionCreator",
+        "type": "address"
+      },
+      {
+        "internalType": "contract Auction",
+        "name": "auction",
+        "type": "address"
+      },
+      {
+        "internalType": "contract AuctionNFT",
+        "name": "auctionNFT",
+        "type": "address"
+      },
+      {
+        "internalType": "contract AuctionToken",
+        "name": "auctionToken",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]

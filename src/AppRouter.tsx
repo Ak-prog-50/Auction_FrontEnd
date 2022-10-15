@@ -8,6 +8,7 @@ import { Route, Routes } from "react-router-dom";
 import AdminPage from "./containers/AdminPage";
 import { AuctionContext, IAuctionContext } from "./context/AuctionContext";
 import LayoutWrapper from "./components/LayoutWrapper";
+import AuctionCreator from "./containers/AuctionCreator";
 
 function AppRouter() {
   const { auctionState } = useContext(AuctionContext) as IAuctionContext;
@@ -18,12 +19,17 @@ function AppRouter() {
         <Header />
         <AuctionState />
         <Routes>
-          <Route
+        <Route
             path="/"
+            element={<AuctionCreator />}
+        />
+
+          <Route
+            path="/:auctionName"
             element={auctionState === 0 ? <AuctionClosed /> : <AuctionOpen />}
           />
 
-          <Route path="/admin" element={<AdminPage />} />
+          <Route path="/:auctionName/admin" element={<AdminPage />} />
         </Routes>
       </LayoutWrapper>
 

@@ -1,4 +1,8 @@
+import { useState } from "react";
+import { Link } from "react-router-dom";
+
 const Footer = () => {
+  const [auctionName] = useState("hardcoded")
   return (
     <footer className="p-4 fixed left-0 w-full bottom-0 bg-white shadow md:flex md:items-center md:justify-between md:p-6 dark:bg-gray-800">
       <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">
@@ -11,9 +15,9 @@ const Footer = () => {
           </a>
         </li>
         <li>
-          <a href="/admin" className="mr-4 hover:underline md:mr-6">
+          <Link to={`/${auctionName}/admin`} className="mr-4 hover:underline md:mr-6">
             Admin Page
-          </a>
+          </Link>
         </li>
         <li>
           <a href="https://github.com/Ak-prog-50/Gasless_Auction" target="_blank" className="mr-4 hover:underline md:mr-6">
