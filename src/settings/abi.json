@@ -2,6 +2,11 @@
   {
     "inputs": [
       {
+        "internalType": "string",
+        "name": "auctionName",
+        "type": "string"
+      },
+      {
         "internalType": "contract AuctionNFT",
         "name": "_auctionNFT",
         "type": "address"
@@ -284,6 +289,19 @@
         "internalType": "contract AuctionNFT",
         "name": "",
         "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "s_auctionName",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
       }
     ],
     "stateMutability": "view",

@@ -30,7 +30,7 @@ const createAuctionExecute = async (
   console.log(createAuctionOptions(argsArray));
   await createAuction({
     params: createAuctionOptions(argsArray),
-    onSuccess: () => handleSuccess(dispatch, "New Auction is Created"),
+    onSuccess: () => handleSuccess(dispatch, "Your Auction will be creaetd shortly!"),
     onError: (err: Error) => {
       console.error(`\nError in createAuction tx:`, err);
       handleError(dispatch);
@@ -58,8 +58,8 @@ const isAuctionNameTakenQuery = async (bytes32NameString: string) => {
   return isTaken;
 };
 
-const getAuctionsByAddressQuery = async (address: string | null) => {
-  if (!address) return;
+const getAuctionsByAddressQuery = async (accountAddress: string | null) => {
+  if (!accountAddress) return;
   const provider = new ethers.providers.Web3Provider(window?.ethereum);
   const auctionFactoryContract = new ethers.Contract(
     AUCTION_FACTORY_ADDRESS,
@@ -68,19 +68,8 @@ const getAuctionsByAddressQuery = async (address: string | null) => {
   );
   let auctions: string[] = [];
   try {
-    const auctionNamesBytes32: string =
-      await auctionFactoryContract.s_auctionNamesByAddress(address);
-    // auctions = await Promise.all(
-    //   auctionNamesBytes32.map(async (auctionName: string) => {
-    //     const auction = await auctionFactoryContract.s_auctionsMappedByName(auctionName);
-    //     return auction;
-    //   }));
-    console.log("here")
-    const auctionInfo = await auctionFactoryContract.s_auctionsMappedByName(
-      auctionNamesBytes32
-    );
-    auctions.push(auctionInfo.auction);
-    console.log("auctions: here", auctions);
+    const auctionInfoList = await auctionFactoryContract.getAuctionsByAddress(accountAddress);
+    auctions = auctionInfoList.map((auctionInfo: any) => auctionInfo.auction);
   } catch (error) {
     console.error("Error in getAuctionsByAddressQuery: ", error);
   }

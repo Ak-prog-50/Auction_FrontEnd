@@ -19,6 +19,7 @@ import abi from "../settings/abi.json";
 import { parseEther } from "@ethersproject/units";
 import { IHighestBid } from "../@auctionTypes";
 import { formatEther } from "@ethersproject/units";
+import { ethers } from "ethers";
 
 export const fetchAuctionState = async (
   setAuctionState: TAuctionStateSetter,
@@ -152,3 +153,15 @@ export const initSetup = async (auctionState: number, startRegistering: TGeneric
     handleError(dispatch);
   }
 };
+
+export const getAuctionName = async (auctionAddress: string) => {
+  let auctionName: string | undefined;
+  const provider = new ethers.providers.Web3Provider(window?.ethereum);
+  const auctionContract = new ethers.Contract(auctionAddress, abi, provider);
+  try {
+    auctionName = await auctionContract.s_auctionName()
+  } catch (error) {
+    console.error("Error in fetching auction name", error);
+  }
+  return auctionName;
+}

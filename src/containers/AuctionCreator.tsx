@@ -11,9 +11,11 @@ import { handleWarning } from "../helperFunctions/notificationHandlers";
 import useAuctionFactoryCalls from "../hooks/useAuctionFactoryCalls";
 import { GET_BLOCKSCAN_URL } from "../settings/constants";
 import Spinner from "../components/Spinner";
+import { getAuctionName } from "../helperFunctions/contractQueries";
 
 const AuctionList = () => {
-  const [auctions, setAuctions] = useState([""]);
+  const [auctions, setAuctions] = useState<string[]>([]);
+  const [auctionNames, setAuctionNames] = useState<string[]>([]);
   const { account, isWeb3Enabled, isWeb3EnableLoading } = useMoralis();
 
   useEffect(() => {
@@ -21,7 +23,24 @@ const AuctionList = () => {
     async function fetchAuctionFactoryData() {
       const auctions = await getAuctionsByAddressQuery(account);
       console.log("auctions", auctions);
-      setAuctions(auctions as []);
+      setAuctions(auctions as string[]);
+      if (!auctions) return;
+      const auctionNames: string[] = [];
+      for (let i = 0; i < auctions.length; i++) {
+        console.log("inside for loop", i, auctions.length);
+        const auctionAddress = auctions[i];
+        const auctionName = await getAuctionName(auctionAddress);
+        if (auctionName) {
+          auctionNames.push(auctionName);
+        }
+      }
+      if (auctionNames.length !== auctions.length) {
+        console.log("auctionNames", auctionNames);
+        console.log("auctions", auctions);
+        console.error("Auction Names and Auctions are not the same length");
+        return;
+      }
+      setAuctionNames(auctionNames);
     }
     fetchAuctionFactoryData();
   }, [account, isWeb3Enabled, isWeb3EnableLoading]);
@@ -37,7 +56,7 @@ const AuctionList = () => {
               target="_blank"
               className="text-blue-900 bold no-underline hover:underline hover:text-blue-700"
             >
-              {i}
+              {auctionNames[auctions.indexOf(i)]}
             </a>
           </li>
         ))}
