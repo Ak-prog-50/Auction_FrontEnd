@@ -1,7 +1,7 @@
 import { parseEther } from "@ethersproject/units";
 
 export const AUCTION_FACTORY_ADDRESS =
-  "0x1c8852Fd0c4BFDBEa80d60409411FA539fF5BC5D";
+  "0xC59791F4455d91787A85ee3dE505bDdBb9A1B0a3";
 
 export const FACTORY_BLOCKSCAN_URL = `https://mumbai.polygonscan.com/address/${AUCTION_FACTORY_ADDRESS}#readContract`;
 // export const NFT_ADDR = "0x7272924794377Dd0EF0E92c0F675beb488b32443";

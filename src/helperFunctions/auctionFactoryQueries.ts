@@ -3,6 +3,7 @@ import { handleError, handleSuccess } from "./notificationHandlers";
 import auctionFactoryAbi from "../settings/auctionFactoryAbi.json";
 import { AUCTION_FACTORY_ADDRESS } from "../settings/constants";
 import { BigNumber, ethers } from "ethers";
+import auctionAbi from "../settings/abi.json";
 
 const createAuctionOptions = (
   argsArray: (FormDataEntryValue | BigNumber)[]
@@ -96,15 +97,34 @@ const filterAuction = async (accountAddress: string, auctionAddress: string) => 
 }
 
 const getERC20Addr = async (accountAddress: string, auctionAddress: string) => {
-  const auctionInfo = await filterAuction(accountAddress, auctionAddress);
+  const auctionOwner = await getContractOwner(auctionAddress);
+  const auctionInfo = await filterAuction(auctionOwner, auctionAddress);
   if (!auctionInfo) return;
   return auctionInfo[0]?.auctionToken;
 }
 
 const getNFTAddr = async (accountAddress: string, auctionAddress: string) => {
-  const auctionInfo = await filterAuction(accountAddress, auctionAddress);
+  const auctionOwner = await getContractOwner(auctionAddress);
+  console.log(auctionOwner, "auctionOwner");
+  const auctionInfo = await filterAuction(auctionOwner, auctionAddress);
   if (!auctionInfo) return;
   return auctionInfo[0]?.auctionNFT;
+}
+
+const getContractOwner = async (contractAddr: string) => {
+  const provider = new ethers.providers.Web3Provider(window?.ethereum);
+  const contract = new ethers.Contract(
+    contractAddr,
+    auctionAbi,
+    provider
+  );
+  let owner: string = "";
+  try {
+    owner = await contract.owner();
+  } catch (error) {
+    console.error("Error in getContractOwner: ", error);
+  }
+  return owner;
 }
 
 export {
