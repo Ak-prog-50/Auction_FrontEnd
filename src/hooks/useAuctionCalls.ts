@@ -1,25 +1,18 @@
 import abi from "../settings/abi.json";
-import { useMoralis, useWeb3Contract, useWeb3ExecuteFunction } from "react-moralis";
-import { IContractAddrs } from "../@auctionTypes";
+import {
+  useWeb3Contract,
+  useWeb3ExecuteFunction,
+} from "react-moralis";
+import { IContractAddrs, TNotificationDispatch } from "../@auctionTypes";
 import increaseAllowanceABI from "../settings/increaseAllowanceABI.json";
 import approveABI from "../settings/approveABI.json";
 import { NFT_TOKEN_ID } from "../settings/constants";
 import { parseEther } from "@ethersproject/units";
-import { getERC20Addr, getNFTAddr } from "../helperFunctions/auctionFactoryQueries";
+import { handleSuccess } from "../helperFunctions/notificationHandlers";
 
 const useAuctionCalls = (addrs: IContractAddrs, chainId: string | null) => {
-  const auctionAddressPre = window.location.pathname.split('/')[1];
+  const auctionAddressPre = window.location.pathname.split("/")[1];
   const auctionAddress = auctionAddressPre ? auctionAddressPre : undefined;
-  const { account } = useMoralis()
-  let erc20Addr: string = "";
-  let nftAddress: string = "";
-
-  (async function() {
-    erc20Addr = await getERC20Addr(account as string, auctionAddress as string);
-    nftAddress = await getNFTAddr(account as string, auctionAddress as string);
-    console.log("erc20Addr", erc20Addr);
-    console.log("nftAddress", nftAddress);
-  }())
 
   const { runContractFunction: getAuctionState } = useWeb3Contract({
     abi: abi,
@@ -45,7 +38,7 @@ const useAuctionCalls = (addrs: IContractAddrs, chainId: string | null) => {
     isLoading: loadingEnter,
   } = useWeb3Contract({
     abi: abi,
-    contractAddress: chainId ? addrs[chainId] : undefined,
+    contractAddress: auctionAddress,
     functionName: "enter",
   });
 
@@ -72,32 +65,52 @@ const useAuctionCalls = (addrs: IContractAddrs, chainId: string | null) => {
   });
 
   const {
-    runContractFunction: increaseAllowance,
+    fetch: increaseAllowanceFetch,
     isFetching: fetchingAllowance,
     isLoading: loadingAllowance,
-  } = useWeb3Contract({
-    abi: increaseAllowanceABI,
-    contractAddress: "0x362B6379eF8E5346D9355c15D3E0130FC4DFFF40",
-    functionName: "increaseAllowance",
-    params: {
-      spender: auctionAddress,
-      addedValue: parseEther("100"),
-    },
-  });
+  } = useWeb3ExecuteFunction();
+
+  const increaseAllowance = async (erc20Addr: string, dispatch: TNotificationDispatch) => {
+    await increaseAllowanceFetch({
+      params: {
+        abi: increaseAllowanceABI,
+        contractAddress: erc20Addr,
+        functionName: "increaseAllowance",
+        params: {
+          spender: auctionAddress,
+          addedValue: parseEther("100"),
+        },
+      },
+      onSuccess: () => handleSuccess(dispatch, "Allowance will be increased! Please wait to place the Bid."),
+      onError: (err: Error) => {
+        throw new Error(`\nError in increaseAllowance tx: ${err}`);
+      }
+    });
+  };
 
   const {
-    runContractFunction: approveNFT,
+    fetch: approveNFTFetch,
     isFetching: fetchingApprove,
     isLoading: loadingApprove,
-  } = useWeb3Contract({
-    abi: approveABI,
-    contractAddress: "0xaF25478773754c446E2226cF997245f8bA271DF3",
-    functionName: "approve",
-    params: {
-      to: auctionAddress,
-      tokenId: NFT_TOKEN_ID,
-    },
-  });
+  } = useWeb3ExecuteFunction();
+
+  const approveNFT = async (nftAddress: string, dispatch: TNotificationDispatch) => {
+    await approveNFTFetch({
+      params: {
+        abi: approveABI,
+        contractAddress: nftAddress,
+        functionName: "approve",
+        params: {
+          to: auctionAddress,
+          tokenId: NFT_TOKEN_ID,
+        },
+      },
+      onSuccess: () => handleSuccess(dispatch),
+      onError: (err: Error) => {
+        throw new Error(`\nError in approveNFT tx: ${err}`);
+      }
+    });
+  };
 
   const {
     runContractFunction: openAuction,

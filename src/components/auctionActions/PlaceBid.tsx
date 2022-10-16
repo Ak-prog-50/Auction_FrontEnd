@@ -5,9 +5,12 @@ import useAuctionCalls from "../../hooks/useAuctionCalls";
 import { placeBidExecute } from "../../helperFunctions/contractQueries";
 import Spinner from "../Spinner";
 import { handleSuccess } from "../../helperFunctions/notificationHandlers";
+import { getERC20Addr } from "../../helperFunctions/auctionFactoryQueries";
+import { useMoralis } from "react-moralis";
 
 const PlaceBid = () => {
   const { addrs, chainId } = useContext(AuctionContext) as IAuctionContext
+  const {account} = useMoralis()
   const dispatch = useNotification();
   const { placeBid, fetchingPlaceBid, loadingPlaceBid, increaseAllowance } = useAuctionCalls(addrs, chainId)
   const auctionAddress = chainId ? addrs[chainId] : undefined;
@@ -21,9 +24,8 @@ const PlaceBid = () => {
           onSubmit={async (event) => {
             event.preventDefault();
             // increase Allowance only if it is not already increased
-            const tx: any = await increaseAllowance({
-              onSuccess: () => handleSuccess(dispatch, "Allowance will be increased! Please wait to place the Bid."),
-            });
+            const erc20Addr = await getERC20Addr(account as string, auctionAddress as string);
+            const tx: any = await increaseAllowance(erc20Addr, dispatch);
             tx && await tx?.wait(1)
             await placeBidExecute(event, placeBid, auctionAddress, dispatch)
           }}

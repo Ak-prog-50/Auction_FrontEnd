@@ -9,6 +9,7 @@ import useAuctionCalls from "../../hooks/useAuctionCalls";
 import Spinner from "../Spinner";
 import { initSetup } from "../../helperFunctions/contractQueries";
 import { GET_BLOCKSCAN_URL } from "../../settings/constants";
+import { useMoralis } from "react-moralis";
 
 interface IAdminButtonsProps {
   isOwner: boolean;
@@ -18,6 +19,9 @@ const AdminButtons = ({ isOwner }: IAdminButtonsProps) => {
   const { addrs, chainId, auctionState } = useContext(
     AuctionContext
   ) as IAuctionContext;
+  const { account } = useMoralis();
+  const auctionAddressPre = window.location.pathname.split("/")[1];
+  const auctionAddress = auctionAddressPre ? auctionAddressPre : undefined;
   const dispatch = useNotification();
   const {
     startRegistering,
@@ -52,7 +56,9 @@ const AdminButtons = ({ isOwner }: IAdminButtonsProps) => {
             startRegistering,
             increaseAllowance,
             approveNFT,
-            dispatch
+            dispatch,
+            account as string,
+            auctionAddress as string
           );
         }}
         disabled={

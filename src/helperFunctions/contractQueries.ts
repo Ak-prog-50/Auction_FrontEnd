@@ -20,6 +20,7 @@ import { parseEther } from "@ethersproject/units";
 import { IHighestBid } from "../@auctionTypes";
 import { formatEther } from "@ethersproject/units";
 import { ethers } from "ethers";
+import { getERC20Addr, getNFTAddr } from "./auctionFactoryQueries";
 
 export const fetchAuctionState = async (
   setAuctionState: TAuctionStateSetter,
@@ -127,7 +128,18 @@ export const fetchBidder = async (
   setHighestBidder(result.highestBidder);
 };
 
-export const initSetup = async (auctionState: number, startRegistering: TGenericContractFunc, increaseAllowance: TGenericContractFunc, approveNFT: TGenericContractFunc, dispatch: TNotificationDispatch) => {//!
+export const initSetup = async (
+  auctionState: number,
+  startRegistering: TGenericContractFunc,
+  increaseAllowance: (
+    erc20Addr: string,
+    dispatch: TNotificationDispatch
+  ) => Promise<void>,
+  approveNFT: (nftAddress: string, dispatch: TNotificationDispatch) => Promise<void>,
+  dispatch: TNotificationDispatch,
+  account: string,
+  auctionAddress: string,
+) => {
   try {
     if (auctionState !== 1) {
       await startRegistering({
@@ -137,17 +149,10 @@ export const initSetup = async (auctionState: number, startRegistering: TGeneric
       });
     }
     // check if the allowance has already been made ( optional )
-    await increaseAllowance({
-      onError: (err: Error) => {
-        throw new Error(`\nError in increaseAllowance tx: ${err}`);
-      },
-    });
-    await approveNFT({
-      onSuccess: () => handleSuccess(dispatch),
-      onError: (err: Error) => {
-        throw new Error(`\nError in approveNFT tx: ${err}`);
-      },
-    });
+    const erc20Addr = await getERC20Addr(account, auctionAddress);
+    await increaseAllowance(erc20Addr, dispatch);
+    const nftAddr = await getNFTAddr(account, auctionAddress);
+    await approveNFT(nftAddr, dispatch);
   } catch (err) {
     console.error("\nError in initial Setup:", err);
     handleError(dispatch);
@@ -159,9 +164,9 @@ export const getAuctionName = async (auctionAddress: string) => {
   const provider = new ethers.providers.Web3Provider(window?.ethereum);
   const auctionContract = new ethers.Contract(auctionAddress, abi, provider);
   try {
-    auctionName = await auctionContract.s_auctionName()
+    auctionName = await auctionContract.s_auctionName();
   } catch (error) {
     console.error("Error in fetching auction name", error);
   }
   return auctionName;
-}
+};
